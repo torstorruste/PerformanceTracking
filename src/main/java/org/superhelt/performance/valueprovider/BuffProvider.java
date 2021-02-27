@@ -2,6 +2,8 @@ package org.superhelt.performance.valueprovider;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.superhelt.performance.om.Event;
 import org.superhelt.performance.om.EventType;
 import org.superhelt.performance.om.Report;
@@ -13,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BuffProvider extends EventProvider {
+
+    private static final Logger log = LoggerFactory.getLogger(BuffProvider.class);
 
     private final int abilityId;
     private final Report report;
@@ -33,6 +37,7 @@ public class BuffProvider extends EventProvider {
 
     @Override
     public List<Event> getValues(JsonObject report) {
+        log.debug("Preparing to fetch data for report {} and buff {}", this.report.getCode(), name);
         JsonArray data = report.get(name).getAsJsonObject().get("data").getAsJsonArray();
 
         List<Event> result = new ArrayList<>();
@@ -40,6 +45,7 @@ public class BuffProvider extends EventProvider {
             result.add(parseEvent(data.get(i).getAsJsonObject()));
         }
 
+        log.debug("Found {} events for report {} and buff {}", result.size(), this.report.getCode(), name);
         return result;
     }
 

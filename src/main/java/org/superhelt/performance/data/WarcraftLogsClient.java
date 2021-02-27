@@ -31,6 +31,7 @@ public class WarcraftLogsClient {
     }
 
     public Report getReport(String reportId) {
+        log.debug("Preparing to fetch report with id {}", reportId);
         if(token==null) {
             token = getToken();
         }
@@ -43,10 +44,12 @@ public class WarcraftLogsClient {
                 .get("reportData").getAsJsonObject()
                 .get("report").getAsJsonObject();
 
+        log.debug("Fetched report with id {}", reportId);
         return reportProvider.getValues(json);
     }
 
     public List<Event> getEvents(Report report, EventProvider... eventProviders) {
+        log.debug("Preparing to fetch events for report {}", report.getCode());
         if(token==null) {
             token = getToken();
         }
@@ -62,11 +65,13 @@ public class WarcraftLogsClient {
             result.addAll(provider.getValues(json));
         }
 
+        log.debug("Found {} events for report {}", result.size(), report.getCode());
         return result;
     }
 
     private String getToken() {
         try {
+            log.debug("Preparing to fetch access token");
             var connection = (HttpURLConnection) new URL("https://www.warcraftlogs.com/oauth/token").openConnection();
 
             var credentials = new String(Base64.getEncoder().encode(String.format("%s:%s",clientId, clientSecret).getBytes()));
@@ -79,7 +84,9 @@ public class WarcraftLogsClient {
             var responseCode = connection.getResponseCode();
 
             if(responseCode<400) {
-                return extractToken(getContent(connection.getInputStream()));
+                String token = extractToken(getContent(connection.getInputStream()));
+                log.debug("Returning token");
+                return token;
             } else {
                 throw new RuntimeException(getContent(connection.getErrorStream()));
             }
@@ -96,6 +103,7 @@ public class WarcraftLogsClient {
 
     private String executeQuery(String token, String query) {
         try {
+            log.debug("Preparing to execute query");
             var connection = (HttpURLConnection) new URL("https://www.warcraftlogs.com/api/v2/client").openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Authorization", "Bearer "+token);
@@ -107,6 +115,7 @@ public class WarcraftLogsClient {
             connection.getOutputStream().close();
 
             var responseCode = connection.getResponseCode();
+            log.debug("Got response {}", responseCode);
 
             if(responseCode<400) {
                 return getContent(connection.getInputStream());
@@ -140,7 +149,10 @@ public class WarcraftLogsClient {
         WarcraftLogsClient client = new WarcraftLogsClient(new QueryBuilder());
 
         var report = client.getReport("MdPr1Y6VwHWLZ2AB");
-        var events = client.getEvents(report, new BuffProvider("Barkskin", 22812, report));
+        var events = client.getEvents(report,
+                new BuffProvider("Barkskin", 22812, report),
+                new BuffProvider("DieByTheSword", 118038, report),
+                new BuffProvider("SpellReflection", 23920, report));
 
         System.out.println(report.getCode());
         System.out.println(events.size());
