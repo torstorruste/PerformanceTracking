@@ -1,0 +1,183 @@
+{
+  "data": {
+    "reportData": {
+      "report": {
+        "code": "AGTzBFcKpCW6Nm7q",
+        "startTime": 1614192504659,
+        "endTime": 1614205814507,
+        "masterData": {
+          "actors": [
+            {
+              "gameID": 142901563,
+              "id": 1,
+              "name": "Ludicrous",
+              "type": "Player",
+              "subType": "Druid"
+            },
+            {
+              "gameID": 136381379,
+              "id": 2,
+              "name": "Izzual",
+              "type": "Player",
+              "subType": "Druid"
+            },
+            {
+              "gameID": 164358190,
+              "id": 3,
+              "name": "Zikurawa",
+              "type": "Player",
+              "subType": "Warrior"
+            },
+            {
+              "gameID": 107371454,
+              "id": 4,
+              "name": "Zimbu",
+              "type": "Player",
+              "subType": "Warlock"
+            },
+            {
+              "gameID": 164953032,
+              "id": 5,
+              "name": "Monkarama",
+              "type": "Player",
+              "subType": "Monk"
+            },
+            {
+              "gameID": 142466644,
+              "id": 6,
+              "name": "Bluenessie",
+              "type": "Player",
+              "subType": "Mage"
+            },
+            {
+              "gameID": 141589368,
+              "id": 7,
+              "name": "Lonêfox",
+              "type": "Player",
+              "subType": "DeathKnight"
+            },
+            {
+              "gameID": 145920925,
+              "id": 8,
+              "name": "Arethemy",
+              "type": "Player",
+              "subType": "Hunter"
+            },
+            {
+              "gameID": 149953961,
+              "id": 10,
+              "name": "Djibriel",
+              "type": "Player",
+              "subType": "Paladin"
+            },
+            {
+              "gameID": 134231906,
+              "id": 12,
+              "name": "Chaarpdh",
+              "type": "Player",
+              "subType": "DemonHunter"
+            },
+            {
+              "gameID": 104420072,
+              "id": 14,
+              "name": "Najglavniji",
+              "type": "Player",
+              "subType": "Priest"
+            },
+            {
+              "gameID": 134828845,
+              "id": 17,
+              "name": "Drahc",
+              "type": "Player",
+              "subType": "Druid"
+            },
+            {
+              "gameID": 164931678,
+              "id": 19,
+              "name": "Ffxivweeb",
+              "type": "Player",
+              "subType": "Mage"
+            },
+            {
+              "gameID": 124462034,
+              "id": 21,
+              "name": "Geowall",
+              "type": "Player",
+              "subType": "Mage"
+            },
+            {
+              "gameID": 153083556,
+              "id": 26,
+              "name": "Justacake",
+              "type": "Player",
+              "subType": "Priest"
+            },
+            {
+              "gameID": 164399512,
+              "id": 27,
+              "name": "Assew",
+              "type": "Player",
+              "subType": "Warlock"
+            },
+            {
+              "gameID": 164994330,
+              "id": 28,
+              "name": "Yamamage",
+              "type": "Player",
+              "subType": "Mage"
+            },
+            {
+              "gameID": 153400800,
+              "id": 31,
+              "name": "Malpyn",
+              "type": "Player",
+              "subType": "Paladin"
+            },
+            {
+              "gameID": 135300856,
+              "id": 32,
+              "name": "Furo",
+              "type": "Player",
+              "subType": "Shaman"
+            },
+            {
+              "gameID": 142152086,
+              "id": 33,
+              "name": "Turboo",
+              "type": "Player",
+              "subType": "Hunter"
+            },
+            {
+              "gameID": 158543703,
+              "id": 99,
+              "name": "Voidtoth",
+              "type": "Player",
+              "subType": "Priest"
+            },
+            {
+              "gameID": 164729056,
+              "id": 103,
+              "name": "Alocken",
+              "type": "Player",
+              "subType": "Warlock"
+            },
+            {
+              "gameID": 156916292,
+              "id": 106,
+              "name": "Spiritwithme",
+              "type": "Player",
+              "subType": "Shaman"
+            },
+            {
+              "gameID": 155665345,
+              "id": 107,
+              "name": "Gluggie",
+              "type": "Player",
+              "subType": "DeathKnight"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

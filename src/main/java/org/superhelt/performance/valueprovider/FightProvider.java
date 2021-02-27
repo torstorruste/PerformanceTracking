@@ -7,11 +7,10 @@ import org.superhelt.performance.om.Fight;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FightValueProvider implements ValueProvider<Fight> {
+public class FightProvider implements ValueProvider<Fight> {
     public String getQueryFragment() {
         StringBuilder sb = new StringBuilder();
         sb.append("\t\t\tfights(difficulty: 5) {\n");
@@ -27,9 +26,7 @@ public class FightValueProvider implements ValueProvider<Fight> {
     }
 
     @Override
-    public List<Fight> getValues(JsonObject data) {
-        var report = data.get("data").getAsJsonObject().get("reportData").getAsJsonObject().get("report").getAsJsonObject();
-
+    public List<Fight> getValues(JsonObject report) {
         long startTimeLong = report.get("startTime").getAsLong();
         var startTime = LocalDateTime.ofEpochSecond(startTimeLong/1000, (int)(startTimeLong%1000)*1000000, ZoneOffset.ofHours(1));
 

@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ValueProvider<T> {
     String getQueryFragment();
-    List<T> getValues(JsonObject data);
+    List<T> getValues(JsonObject report);
 }

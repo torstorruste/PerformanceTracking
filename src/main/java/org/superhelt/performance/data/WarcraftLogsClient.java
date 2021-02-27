@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.superhelt.performance.valueprovider.FightValueProvider;
+import org.superhelt.performance.valueprovider.FightProvider;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class WarcraftLogsClient {
 
     public static void main(String[] args) {
         QueryBuilder builder = new QueryBuilder();
-        FightValueProvider provider = new FightValueProvider();
+        FightProvider provider = new FightProvider();
         var query = builder.createQuery("MdPr1Y6VwHWLZ2AB", Collections.singletonList(provider));
 
 
