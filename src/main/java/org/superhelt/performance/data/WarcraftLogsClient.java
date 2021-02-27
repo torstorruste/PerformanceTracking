@@ -16,7 +16,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
 
-public class WarcraftLogsClient {
+public class WarcraftLogsClient implements DataClient {
 
     private static final Logger log = LoggerFactory.getLogger(WarcraftLogsClient.class);
 
@@ -143,18 +143,5 @@ public class WarcraftLogsClient {
             log.error("Unable to read content", e);
             return null;
         }
-    }
-
-    public static void main(String[] args) {
-        WarcraftLogsClient client = new WarcraftLogsClient(new QueryBuilder());
-
-        var report = client.getReport("MdPr1Y6VwHWLZ2AB");
-        var events = client.getEvents(report,
-                new BuffProvider("Barkskin", 22812, report),
-                new BuffProvider("DieByTheSword", 118038, report),
-                new BuffProvider("SpellReflection", 23920, report));
-
-        System.out.println(report.getCode());
-        System.out.println(events.size());
     }
 }
