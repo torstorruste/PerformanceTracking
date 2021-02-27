@@ -6,7 +6,7 @@ import org.superhelt.performance.om.ReportPlayer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayerProvider implements ValueProvider<ReportPlayer> {
+public class PlayerProvider implements ValueProvider<List<ReportPlayer>> {
     @Override
     public String getQueryFragment() {
         StringBuilder sb = new StringBuilder();

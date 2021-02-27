@@ -1,10 +1,14 @@
 package org.superhelt.performance.data;
 
+import ch.qos.logback.core.spi.FilterReply;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.superhelt.performance.valueprovider.BuffProvider;
 import org.superhelt.performance.valueprovider.FightProvider;
+import org.superhelt.performance.valueprovider.PlayerProvider;
+import org.superhelt.performance.valueprovider.ReportProvider;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,19 +28,37 @@ public class WarcraftLogsClient {
 
     public static void main(String[] args) {
         QueryBuilder builder = new QueryBuilder();
-        FightProvider provider = new FightProvider();
-        var query = builder.createQuery("MdPr1Y6VwHWLZ2AB", Collections.singletonList(provider));
+        FightProvider fightProvider = new FightProvider();
+        PlayerProvider playerProvider = new PlayerProvider();
+        ReportProvider reportProvider = new ReportProvider(playerProvider, fightProvider);
 
+        var query = builder.createQuery("MdPr1Y6VwHWLZ2AB", Collections.singletonList(reportProvider));
 
         WarcraftLogsClient client = new WarcraftLogsClient();
         var token = client.getToken();
 
         var response = client.executeQuery(token, query);
         System.out.println(response);
+        var json = JsonParser.parseString(response).getAsJsonObject()
+                .get("data").getAsJsonObject()
+                .get("reportData").getAsJsonObject()
+                .get("report").getAsJsonObject();
 
-        var fights = provider.getValues(JsonParser.parseString(response).getAsJsonObject());
+        var report = reportProvider.getValues(json);
 
-        System.out.println(fights.size());
+        System.out.println(report.getCode());
+
+        BuffProvider barkskin = new BuffProvider("Barkskin", 22812, report);
+        var secondQuery = builder.createQuery("MdPr1Y6VwHWLZ2AB", Collections.singletonList(barkskin));
+        var secondResponse = client.executeQuery(token, secondQuery);
+        json = JsonParser.parseString(secondResponse).getAsJsonObject()
+                .get("data").getAsJsonObject()
+                .get("reportData").getAsJsonObject()
+                .get("report").getAsJsonObject();
+
+        var events = barkskin.getValues(json);
+
+        System.out.println(events.size());
     }
 
     private String getToken() {

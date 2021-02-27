@@ -10,7 +10,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FightProvider implements ValueProvider<Fight> {
+public class FightProvider implements ValueProvider<List<Fight>> {
     public String getQueryFragment() {
         StringBuilder sb = new StringBuilder();
         sb.append("\t\t\tfights(difficulty: 5) {\n");

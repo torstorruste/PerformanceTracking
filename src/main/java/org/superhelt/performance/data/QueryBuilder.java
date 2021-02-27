@@ -12,9 +12,7 @@ public class QueryBuilder {
         sb.append("query {\n");
         sb.append("\treportData {\n");
         sb.append("\t\treport(code: \"").append(reportId).append("\") {\n");
-        sb.append("\t\t\tcode,");
-        sb.append("\t\t\tstartTime,");
-        sb.append("\t\t\tendTime");
+        sb.append("\t\t\tcode");
         for(var provider : valueProviders) {
             sb.append(",\n").append(provider.getQueryFragment());
         }
