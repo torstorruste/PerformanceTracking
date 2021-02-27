@@ -36,7 +36,7 @@ public class QueryBuilder {
         sb.append("\t\treport(code: \"").append(report.getCode()).append("\") {\n");
         sb.append("\t\t\tcode");
         for(var provider : eventProviders) {
-            sb.append(",\n").append(provider.getQueryFragment(null));
+            sb.append(",\n").append(provider.getQueryFragment(report));
         }
 
         sb.append("\t\t}\n");

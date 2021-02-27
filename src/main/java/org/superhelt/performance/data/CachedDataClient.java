@@ -26,7 +26,7 @@ public class CachedDataClient implements DataClient {
     public CachedDataClient(DataClient dataClient) {
         this.dataClient = dataClient;
         this.reportDirectory = Paths.get("data");
-        this.eventDirectory = Paths.get("event");
+        this.eventDirectory = Paths.get("events");
         this.gson = new Gson();
     }
 
@@ -48,7 +48,7 @@ public class CachedDataClient implements DataClient {
     }
 
     @Override
-    public List<Event> getEvents(Report report, EventProvider... eventProviders) {
+    public List<Event> getEvents(Report report, List<EventProvider> eventProviders) {
         try {
             Path dataFile = eventDirectory.resolve(report.getCode()+".json");
             if(!Files.exists(dataFile)) {

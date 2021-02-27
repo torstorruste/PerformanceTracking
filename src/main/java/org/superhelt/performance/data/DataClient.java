@@ -9,5 +9,5 @@ import java.util.List;
 public interface DataClient {
 
     public Report getReport(String reportId);
-    List<Event> getEvents(Report report, EventProvider... eventProviders);
+    List<Event> getEvents(Report report, List<EventProvider> eventProviders);
 }

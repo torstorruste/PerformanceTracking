@@ -49,12 +49,12 @@ public class WarcraftLogsClient implements DataClient {
         return reportProvider.getValues(json);
     }
 
-    public List<Event> getEvents(Report report, EventProvider... eventProviders) {
+    public List<Event> getEvents(Report report, List<EventProvider> eventProviders) {
         log.debug("Preparing to fetch events for report {}", report.getCode());
         if(token==null) {
             token = getToken();
         }
-        var query = queryBuilder.createQuery(report, Arrays.asList(eventProviders));
+        var query = queryBuilder.createQuery(report, eventProviders);
         String response = executeQuery(token, query);
         var json = JsonParser.parseString(response).getAsJsonObject()
                 .get("data").getAsJsonObject()
