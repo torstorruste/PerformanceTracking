@@ -18,6 +18,7 @@ public class PerformanceTracker {
         List<EventProvider> eventProviders = new ArrayList<>();
         eventProviders.addAll(EventProviders.defensives());
         eventProviders.addAll(EventProviders.heals());
+        eventProviders.addAll(EventProviders.deaths());
         var events = client.getEvents(report, eventProviders);
 
         System.out.println(report.getCode());

@@ -5,6 +5,10 @@ import java.util.List;
 
 public class EventProviders {
 
+    public static List<EventProvider> deaths() {
+        return Arrays.asList(new DeathsProvider());
+    }
+
     public static List<EventProvider> heals() {
         return Arrays.asList(
                 new HealingProvider("Healthstone", 6262),
