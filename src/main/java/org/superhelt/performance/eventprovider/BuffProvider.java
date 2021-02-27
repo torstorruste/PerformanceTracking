@@ -1,4 +1,4 @@
-package org.superhelt.performance.valueprovider;
+package org.superhelt.performance.eventprovider;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -14,21 +14,20 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BuffProvider extends EventProvider {
+public class BuffProvider implements EventProvider {
 
     private static final Logger log = LoggerFactory.getLogger(BuffProvider.class);
 
+    private final String name;
     private final int abilityId;
-    private final Report report;
 
-    public BuffProvider(String name, int abilityId, Report report) {
-        super(name);
+    public BuffProvider(String name, int abilityId) {
+        this.name = name;
         this.abilityId = abilityId;
-        this.report = report;
     }
 
     @Override
-    public String getQueryFragment() {
+    public String getQueryFragment(Report report) {
         var endTime = Duration.between(report.getStartTime(), report.getEndTime()).getSeconds()*1000;
 
         return String.format("%s: events(abilityID: %d, startTime: %d, endTime: %d, dataType: Buffs) {data}",
@@ -36,20 +35,20 @@ public class BuffProvider extends EventProvider {
     }
 
     @Override
-    public List<Event> getValues(JsonObject report) {
-        log.debug("Preparing to fetch data for report {} and buff {}", this.report.getCode(), name);
-        JsonArray data = report.get(name).getAsJsonObject().get("data").getAsJsonArray();
+    public List<Event> getValues(Report report, JsonObject json) {
+        log.debug("Preparing to fetch data for buff {}", name);
+        JsonArray data = json.get(name).getAsJsonObject().get("data").getAsJsonArray();
 
         List<Event> result = new ArrayList<>();
         for(int i=0;i<data.size();i++) {
-            result.add(parseEvent(data.get(i).getAsJsonObject()));
+            result.add(parseEvent(data.get(i).getAsJsonObject(), report));
         }
 
-        log.debug("Found {} events for report {} and buff {}", result.size(), this.report.getCode(), name);
+        log.debug("Found {} events for buff {}", result.size(), name);
         return result;
     }
 
-    private Event parseEvent(JsonObject event) {
+    private Event parseEvent(JsonObject event, Report report) {
         int fightId = event.get("fight").getAsInt();
         long diff = event.get("timestamp").getAsLong();
         LocalDateTime timestamp = report.getStartTime().plus(diff, ChronoUnit.MILLIS);

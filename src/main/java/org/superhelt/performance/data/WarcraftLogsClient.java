@@ -4,9 +4,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.superhelt.performance.eventprovider.EventProvider;
 import org.superhelt.performance.om.Event;
 import org.superhelt.performance.om.Report;
-import org.superhelt.performance.valueprovider.*;
+import org.superhelt.performance.reportprovider.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -53,7 +54,7 @@ public class WarcraftLogsClient implements DataClient {
         if(token==null) {
             token = getToken();
         }
-        var query = queryBuilder.createQuery(report.getCode(), Arrays.asList(eventProviders));
+        var query = queryBuilder.createQuery(report, Arrays.asList(eventProviders));
         String response = executeQuery(token, query);
         var json = JsonParser.parseString(response).getAsJsonObject()
                 .get("data").getAsJsonObject()
@@ -62,7 +63,7 @@ public class WarcraftLogsClient implements DataClient {
 
         List<Event> result = new ArrayList<>();
         for(EventProvider provider : eventProviders) {
-            result.addAll(provider.getValues(json));
+            result.addAll(provider.getValues(report, json));
         }
 
         log.debug("Found {} events for report {}", result.size(), report.getCode());

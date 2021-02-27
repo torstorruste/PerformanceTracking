@@ -1,4 +1,4 @@
-package org.superhelt.performance.valueprovider;
+package org.superhelt.performance.reportprovider;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

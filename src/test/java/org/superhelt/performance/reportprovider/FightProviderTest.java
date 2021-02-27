@@ -1,4 +1,4 @@
-package org.superhelt.performance.valueprovider;
+package org.superhelt.performance.reportprovider;
 
 import org.junit.jupiter.api.Test;
 

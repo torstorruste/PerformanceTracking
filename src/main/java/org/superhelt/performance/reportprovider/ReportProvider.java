@@ -1,11 +1,10 @@
-package org.superhelt.performance.valueprovider;
+package org.superhelt.performance.reportprovider;
 
 import com.google.gson.JsonObject;
 import org.superhelt.performance.om.Report;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.List;
 
 public class ReportProvider implements ValueProvider<Report> {
 
