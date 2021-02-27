@@ -10,15 +10,17 @@ public class QueryBuilder {
         StringBuilder sb = new StringBuilder();
 
         sb.append("query {\n");
-        sb.append(" reportData {\n");
-        sb.append("    report(code: \"").append(reportId).append("\") {\n");
-        sb.append("      code");
+        sb.append("\treportData {\n");
+        sb.append("\t\treport(code: \"").append(reportId).append("\") {\n");
+        sb.append("\t\t\tcode,");
+        sb.append("\t\t\tstartTime,");
+        sb.append("\t\t\tendTime");
         for(var provider : valueProviders) {
             sb.append(",\n").append(provider.getQueryFragment());
         }
 
-        sb.append("    }\n");
-        sb.append("  }\n");
+        sb.append("\t\t}\n");
+        sb.append("\t}\n");
         sb.append("}");
 
         String query = sb.toString().replace("\\", "\\\\").replace("\"", "\\\"");

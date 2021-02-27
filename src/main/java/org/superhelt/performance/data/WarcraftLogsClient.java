@@ -24,7 +24,8 @@ public class WarcraftLogsClient {
 
     public static void main(String[] args) {
         QueryBuilder builder = new QueryBuilder();
-        var query = builder.createQuery("MdPr1Y6VwHWLZ2AB", Collections.singletonList(new FightValueProvider()));
+        FightValueProvider provider = new FightValueProvider();
+        var query = builder.createQuery("MdPr1Y6VwHWLZ2AB", Collections.singletonList(provider));
 
 
         WarcraftLogsClient client = new WarcraftLogsClient();
@@ -32,6 +33,10 @@ public class WarcraftLogsClient {
 
         var response = client.executeQuery(token, query);
         System.out.println(response);
+
+        var fights = provider.getValues(JsonParser.parseString(response).getAsJsonObject());
+
+        System.out.println(fights.size());
     }
 
     private String getToken() {
@@ -70,7 +75,7 @@ public class WarcraftLogsClient {
             connection.setRequestProperty("Authorization", "Bearer "+token);
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setDoOutput(true);
-            String replace = query.replace("\n", "");
+            String replace = query.replace("\n", "").replace("\t", "");
             connection.getOutputStream().write(replace.getBytes());
             connection.getOutputStream().flush();
             connection.getOutputStream().close();

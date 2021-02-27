@@ -1,0 +1,328 @@
+{
+    "data": {
+    "reportData": {
+    "report": {
+    "code": "MdPr1Y6VwHWLZ2AB",
+    "startTime": 1614020263501,
+    "endTime": 1614033034513,
+    "fights": [
+    {
+        "encounterID": 2417,
+        "fightPercentage": 61.18,
+        "startTime": 782809,
+        "endTime": 1093656,
+        "name": "Stone Legion Generals",
+        "id": 3,
+        "kill": false
+    },
+    {
+        "encounterID": 2417,
+        "fightPercentage": 74.59,
+        "startTime": 1195827,
+        "endTime": 1417699,
+        "name": "Stone Legion Generals",
+        "id": 4,
+        "kill": false
+    },
+    {
+        "encounterID": 2417,
+        "fightPercentage": 73.29,
+        "startTime": 1549596,
+        "endTime": 1780170,
+        "name": "Stone Legion Generals",
+        "id": 5,
+        "kill": false
+    },
+    {
+        "encounterID": 2417,
+        "fightPercentage": 72.32,
+        "startTime": 1909084,
+        "endTime": 2166495,
+        "name": "Stone Legion Generals",
+        "id": 6,
+        "kill": false
+    },
+    {
+        "encounterID": 2417,
+        "fightPercentage": 33.81,
+        "startTime": 2261491,
+        "endTime": 2826901,
+        "name": "Stone Legion Generals",
+        "id": 7,
+        "kill": false
+    },
+    {
+        "encounterID": 2417,
+        "fightPercentage": 73.08,
+        "startTime": 2954987,
+        "endTime": 3150393,
+        "name": "Stone Legion Generals",
+        "id": 8,
+        "kill": false
+    },
+    {
+        "encounterID": 2417,
+        "fightPercentage": 73.09,
+        "startTime": 3241615,
+        "endTime": 3438476,
+        "name": "Stone Legion Generals",
+        "id": 9,
+        "kill": false
+    },
+    {
+        "encounterID": 2417,
+        "fightPercentage": 0,
+        "startTime": 3563329,
+        "endTime": 4202021,
+        "name": "Stone Legion Generals",
+        "id": 11,
+        "kill": true
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 90.94,
+        "startTime": 5506176,
+        "endTime": 5576298,
+        "name": "Sire Denathrius",
+        "id": 12,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 90.2,
+        "startTime": 5727173,
+        "endTime": 5786558,
+        "name": "Sire Denathrius",
+        "id": 14,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 76.74,
+        "startTime": 5888791,
+        "endTime": 6071922,
+        "name": "Sire Denathrius",
+        "id": 15,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 82.6,
+        "startTime": 6205924,
+        "endTime": 6357596,
+        "name": "Sire Denathrius",
+        "id": 16,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 85.24,
+        "startTime": 6523505,
+        "endTime": 6637728,
+        "name": "Sire Denathrius",
+        "id": 17,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 76.3,
+        "startTime": 6857565,
+        "endTime": 7048067,
+        "name": "Sire Denathrius",
+        "id": 18,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 89.4,
+        "startTime": 7132751,
+        "endTime": 7203198,
+        "name": "Sire Denathrius",
+        "id": 19,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 85.47,
+        "startTime": 7338411,
+        "endTime": 7440735,
+        "name": "Sire Denathrius",
+        "id": 20,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 82.37,
+        "startTime": 7582156,
+        "endTime": 7702130,
+        "name": "Sire Denathrius",
+        "id": 21,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 75.98,
+        "startTime": 7785457,
+        "endTime": 7976031,
+        "name": "Sire Denathrius",
+        "id": 22,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 81.67,
+        "startTime": 8070656,
+        "endTime": 8195495,
+        "name": "Sire Denathrius",
+        "id": 23,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 80.81,
+        "startTime": 8323907,
+        "endTime": 8463424,
+        "name": "Sire Denathrius",
+        "id": 24,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 90.73,
+        "startTime": 8551109,
+        "endTime": 8608023,
+        "name": "Sire Denathrius",
+        "id": 25,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 72.15,
+        "startTime": 8690583,
+        "endTime": 8883615,
+        "name": "Sire Denathrius",
+        "id": 26,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 89.11,
+        "startTime": 9251824,
+        "endTime": 9315893,
+        "name": "Sire Denathrius",
+        "id": 27,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 94.11,
+        "startTime": 9421550,
+        "endTime": 9466679,
+        "name": "Sire Denathrius",
+        "id": 28,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 82.45,
+        "startTime": 9551785,
+        "endTime": 9670379,
+        "name": "Sire Denathrius",
+        "id": 29,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 73.16,
+        "startTime": 9754676,
+        "endTime": 9936710,
+        "name": "Sire Denathrius",
+        "id": 30,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 89.47,
+        "startTime": 10026883,
+        "endTime": 10094527,
+        "name": "Sire Denathrius",
+        "id": 31,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 69.11,
+        "startTime": 10173646,
+        "endTime": 10411261,
+        "name": "Sire Denathrius",
+        "id": 32,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 72.09,
+        "startTime": 10921724,
+        "endTime": 11106165,
+        "name": "Sire Denathrius",
+        "id": 33,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 81.98,
+        "startTime": 11192220,
+        "endTime": 11316957,
+        "name": "Sire Denathrius",
+        "id": 34,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 73.25,
+        "startTime": 11439487,
+        "endTime": 11619285,
+        "name": "Sire Denathrius",
+        "id": 35,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 80.49,
+        "startTime": 11751848,
+        "endTime": 11896155,
+        "name": "Sire Denathrius",
+        "id": 36,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 75.02,
+        "startTime": 11975087,
+        "endTime": 12153610,
+        "name": "Sire Denathrius",
+        "id": 37,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 78.09,
+        "startTime": 12231857,
+        "endTime": 12392295,
+        "name": "Sire Denathrius",
+        "id": 38,
+        "kill": false
+    },
+    {
+        "encounterID": 2407,
+        "fightPercentage": 68.01,
+        "startTime": 12477783,
+        "endTime": 12713194,
+        "name": "Sire Denathrius",
+        "id": 39,
+        "kill": false
+    }
+    ]
+}
+}
+}
+}
