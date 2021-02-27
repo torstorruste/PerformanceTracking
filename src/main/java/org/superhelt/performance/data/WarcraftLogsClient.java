@@ -1,9 +1,10 @@
 package org.superhelt.performance.data;
 
-import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.superhelt.performance.om.responses.TokenResponse;
+import org.superhelt.performance.valueprovider.FightValueProvider;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Base64;
+import java.util.Collections;
 
 public class WarcraftLogsClient {
 
@@ -21,9 +23,14 @@ public class WarcraftLogsClient {
     private static final String clientSecret = "mc23qzmh402vryFNShIEFxPkkpcuQzi68x1O3zqN";
 
     public static void main(String[] args) {
+        QueryBuilder builder = new QueryBuilder();
+        var query = builder.createQuery("MdPr1Y6VwHWLZ2AB", Collections.singletonList(new FightValueProvider()));
+
+
         WarcraftLogsClient client = new WarcraftLogsClient();
         var token = client.getToken();
-        var response = client.executeQuery(token, "{\"query\": \"query {reportData {report(code: \\\"MdPr1Y6VwHWLZ2AB\\\") {code}}}\"}");
+
+        var response = client.executeQuery(token, query);
         System.out.println(response);
     }
 
@@ -52,9 +59,8 @@ public class WarcraftLogsClient {
     }
 
     private String extractToken(String content) {
-        Gson gson = new Gson();
-        var tokenResponse = gson.fromJson(content, TokenResponse.class);
-        return tokenResponse.getAccessToken();
+        JsonObject jsonObject = JsonParser.parseString(content).getAsJsonObject();
+        return jsonObject.get("access_token").getAsString();
     }
 
     private String executeQuery(String token, String query) {
@@ -64,7 +70,8 @@ public class WarcraftLogsClient {
             connection.setRequestProperty("Authorization", "Bearer "+token);
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setDoOutput(true);
-            connection.getOutputStream().write(query.getBytes());
+            String replace = query.replace("\n", "");
+            connection.getOutputStream().write(replace.getBytes());
             connection.getOutputStream().flush();
             connection.getOutputStream().close();
 
