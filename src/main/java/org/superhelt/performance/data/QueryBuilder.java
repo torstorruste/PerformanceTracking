@@ -6,7 +6,7 @@ import java.util.List;
 
 public class QueryBuilder {
 
-    public String createQuery(String reportId, List<ValueProvider> valueProviders) {
+    public String createQuery(String reportId, List<? extends ValueProvider> valueProviders) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("query {\n");

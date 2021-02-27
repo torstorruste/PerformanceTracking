@@ -1,14 +1,12 @@
 package org.superhelt.performance.data;
 
-import ch.qos.logback.core.spi.FilterReply;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.superhelt.performance.valueprovider.BuffProvider;
-import org.superhelt.performance.valueprovider.FightProvider;
-import org.superhelt.performance.valueprovider.PlayerProvider;
-import org.superhelt.performance.valueprovider.ReportProvider;
+import org.superhelt.performance.om.Event;
+import org.superhelt.performance.om.Report;
+import org.superhelt.performance.valueprovider.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,8 +14,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Base64;
-import java.util.Collections;
+import java.util.*;
 
 public class WarcraftLogsClient {
 
@@ -26,39 +23,46 @@ public class WarcraftLogsClient {
     private static final String clientId = "92d34172-d629-470a-9424-eca16af5f7d1";
     private static final String clientSecret = "mc23qzmh402vryFNShIEFxPkkpcuQzi68x1O3zqN";
 
-    public static void main(String[] args) {
-        QueryBuilder builder = new QueryBuilder();
-        FightProvider fightProvider = new FightProvider();
-        PlayerProvider playerProvider = new PlayerProvider();
-        ReportProvider reportProvider = new ReportProvider(playerProvider, fightProvider);
+    private final QueryBuilder queryBuilder;
+    private String token;
 
-        var query = builder.createQuery("MdPr1Y6VwHWLZ2AB", Collections.singletonList(reportProvider));
+    public WarcraftLogsClient(QueryBuilder queryBuilder) {
+        this.queryBuilder = queryBuilder;
+    }
 
-        WarcraftLogsClient client = new WarcraftLogsClient();
-        var token = client.getToken();
+    public Report getReport(String reportId) {
+        if(token==null) {
+            token = getToken();
+        }
+        ReportProvider reportProvider = new ReportProvider(new PlayerProvider(), new FightProvider());
 
-        var response = client.executeQuery(token, query);
-        System.out.println(response);
+        var query = queryBuilder.createQuery(reportId, Collections.singletonList(reportProvider));
+        String response = executeQuery(token, query);
         var json = JsonParser.parseString(response).getAsJsonObject()
                 .get("data").getAsJsonObject()
                 .get("reportData").getAsJsonObject()
                 .get("report").getAsJsonObject();
 
-        var report = reportProvider.getValues(json);
+        return reportProvider.getValues(json);
+    }
 
-        System.out.println(report.getCode());
-
-        BuffProvider barkskin = new BuffProvider("Barkskin", 22812, report);
-        var secondQuery = builder.createQuery("MdPr1Y6VwHWLZ2AB", Collections.singletonList(barkskin));
-        var secondResponse = client.executeQuery(token, secondQuery);
-        json = JsonParser.parseString(secondResponse).getAsJsonObject()
+    public List<Event> getEvents(Report report, EventProvider... eventProviders) {
+        if(token==null) {
+            token = getToken();
+        }
+        var query = queryBuilder.createQuery(report.getCode(), Arrays.asList(eventProviders));
+        String response = executeQuery(token, query);
+        var json = JsonParser.parseString(response).getAsJsonObject()
                 .get("data").getAsJsonObject()
                 .get("reportData").getAsJsonObject()
                 .get("report").getAsJsonObject();
 
-        var events = barkskin.getValues(json);
+        List<Event> result = new ArrayList<>();
+        for(EventProvider provider : eventProviders) {
+            result.addAll(provider.getValues(json));
+        }
 
-        System.out.println(events.size());
+        return result;
     }
 
     private String getToken() {
@@ -130,5 +134,15 @@ public class WarcraftLogsClient {
             log.error("Unable to read content", e);
             return null;
         }
+    }
+
+    public static void main(String[] args) {
+        WarcraftLogsClient client = new WarcraftLogsClient(new QueryBuilder());
+
+        var report = client.getReport("MdPr1Y6VwHWLZ2AB");
+        var events = client.getEvents(report, new BuffProvider("Barkskin", 22812, report));
+
+        System.out.println(report.getCode());
+        System.out.println(events.size());
     }
 }
