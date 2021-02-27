@@ -1,6 +1,7 @@
 package org.superhelt.performance.data;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.superhelt.performance.om.Event;
@@ -66,7 +67,7 @@ public class CachedDataClient implements DataClient {
 
     private List<Event> loadEvents(Path dataFile) throws IOException {
         log.info("Fetching events from {}", dataFile);
-        return gson.fromJson(readFile(dataFile), ArrayList.class);
+        return gson.fromJson(readFile(dataFile), new TypeToken<ArrayList<Event>>(){}.getType());
     }
 
     private void saveEvents(Path dataFile, List<Event> events) throws IOException {
