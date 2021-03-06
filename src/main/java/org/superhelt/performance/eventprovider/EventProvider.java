@@ -2,7 +2,7 @@ package org.superhelt.performance.eventprovider;
 
 import com.google.gson.JsonObject;
 import org.superhelt.performance.om.Event;
-import org.superhelt.performance.om.Report;
+import org.superhelt.performance.om.warcraftlogs.Report;
 
 import java.util.List;
 

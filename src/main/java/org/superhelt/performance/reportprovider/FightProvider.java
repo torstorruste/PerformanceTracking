@@ -2,7 +2,7 @@ package org.superhelt.performance.reportprovider;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import org.superhelt.performance.om.Fight;
+import org.superhelt.performance.om.warcraftlogs.Fight;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -22,7 +22,8 @@ public class FightProvider implements ValueProvider<List<Fight>> {
         sb.append("\t\t\t\tendTime,\n");
         sb.append("\t\t\t\tname,\n");
         sb.append("\t\t\t\tid,\n");
-        sb.append("\t\t\t\tkill\n");
+        sb.append("\t\t\t\tkill,\n");
+        sb.append("\t\t\t\tfriendlyPlayers\n");
         sb.append("\t\t\t}\n");
         return sb.toString();
     }
@@ -51,6 +52,18 @@ public class FightProvider implements ValueProvider<List<Fight>> {
         double percentage = fight.get("fightPercentage").getAsDouble();
         boolean kill = fight.get("kill").getAsBoolean();
 
-        return new Fight(id, encounterId, startTime, endTime, name, percentage, kill);
+        List<Integer> players = parsePlayerIds(fight.get("friendlyPlayers").getAsJsonArray());
+
+        return new Fight(id, encounterId, startTime, endTime, name, percentage, kill, players);
+    }
+
+    private List<Integer> parsePlayerIds(JsonArray ids) {
+        List<Integer> result = new ArrayList<>();
+
+        for(var id : ids) {
+            result.add(id.getAsInt());
+        }
+
+        return result;
     }
 }

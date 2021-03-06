@@ -1,4 +1,6 @@
-package org.superhelt.performance.om;
+package org.superhelt.performance.om.warcraftlogs;
+
+import org.superhelt.performance.om.Player;
 
 public class ReportPlayer extends Player {
 

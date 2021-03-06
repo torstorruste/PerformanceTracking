@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.superhelt.performance.eventprovider.EventProvider;
 import org.superhelt.performance.om.Event;
-import org.superhelt.performance.om.Report;
+import org.superhelt.performance.om.warcraftlogs.Report;
 import org.superhelt.performance.reportprovider.*;
 
 import java.io.BufferedReader;

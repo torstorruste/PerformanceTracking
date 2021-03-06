@@ -5,15 +5,11 @@ import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.superhelt.performance.om.Event;
-import org.superhelt.performance.om.EventType;
-import org.superhelt.performance.om.Report;
+import org.superhelt.performance.om.warcraftlogs.Report;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class DeathsProvider implements EventProvider {
 

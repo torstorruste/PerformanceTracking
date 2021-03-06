@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.superhelt.performance.om.Event;
-import org.superhelt.performance.om.Report;
+import org.superhelt.performance.om.warcraftlogs.Report;
 import org.superhelt.performance.eventprovider.EventProvider;
 
 import java.io.IOException;

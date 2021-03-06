@@ -1,4 +1,4 @@
-package org.superhelt.performance.om;
+package org.superhelt.performance.om.warcraftlogs;
 
 import java.time.LocalDateTime;
 import java.util.List;

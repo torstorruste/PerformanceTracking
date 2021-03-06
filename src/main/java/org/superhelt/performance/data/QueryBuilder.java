@@ -1,6 +1,6 @@
 package org.superhelt.performance.data;
 
-import org.superhelt.performance.om.Report;
+import org.superhelt.performance.om.warcraftlogs.Report;
 import org.superhelt.performance.eventprovider.EventProvider;
 import org.superhelt.performance.reportprovider.ValueProvider;
 

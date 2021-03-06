@@ -1,7 +1,7 @@
 package org.superhelt.performance.reportprovider;
 
 import com.google.gson.JsonObject;
-import org.superhelt.performance.om.ReportPlayer;
+import org.superhelt.performance.om.warcraftlogs.ReportPlayer;
 
 import java.util.ArrayList;
 import java.util.List;

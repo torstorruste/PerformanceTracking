@@ -1,7 +1,7 @@
 package org.superhelt.performance.reportprovider;
 
 import com.google.gson.JsonObject;
-import org.superhelt.performance.om.Report;
+import org.superhelt.performance.om.warcraftlogs.Report;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
