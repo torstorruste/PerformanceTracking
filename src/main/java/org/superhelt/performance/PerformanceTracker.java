@@ -14,14 +14,17 @@ public class PerformanceTracker {
     public static void main(String[] args) {
         var client = new CachedDataClient(new WarcraftLogsClient(new QueryBuilder()));
 
-        var report = client.getReport("MdPr1Y6VwHWLZ2AB");
-        List<EventProvider> eventProviders = new ArrayList<>();
-        eventProviders.addAll(EventProviders.defensives());
-        eventProviders.addAll(EventProviders.heals());
-        eventProviders.addAll(EventProviders.deaths());
-        var events = client.getEvents(report, eventProviders);
+        for(String reportId : client.getReportIds(277050)) {
 
-        System.out.println(report.getCode());
-        System.out.println(events.size());
+            var report = client.getReport(reportId);
+            List<EventProvider> eventProviders = new ArrayList<>();
+            eventProviders.addAll(EventProviders.defensives());
+            eventProviders.addAll(EventProviders.heals());
+            eventProviders.addAll(EventProviders.deaths());
+            var events = client.getEvents(report, eventProviders);
+
+            System.out.println(report.getCode());
+            System.out.println(events.size());
+        }
     }
 }

@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface DataClient {
 
-    public Report getReport(String reportId);
+    List<String> getReportIds(int guildId);
+    Report getReport(String reportId);
     List<Event> getEvents(Report report, List<EventProvider> eventProviders);
 }

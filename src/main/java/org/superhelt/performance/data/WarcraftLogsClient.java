@@ -31,9 +31,30 @@ public class WarcraftLogsClient implements DataClient {
         this.queryBuilder = queryBuilder;
     }
 
+    public List<String> getReportIds(int guildId) {
+        log.debug("Preparing to fetch report ids for guild {}", guildId);
+        if (token == null) {
+            token = getToken();
+        }
+        String query = queryBuilder.listReportQuery(guildId);
+        String response = executeQuery(token, query);
+
+        var reports = JsonParser.parseString(response).getAsJsonObject()
+                .get("data").getAsJsonObject()
+                .get("reportData").getAsJsonObject()
+                .get("reports").getAsJsonObject()
+                .get("data").getAsJsonArray();
+
+        List<String> result = new ArrayList<>();
+        for (var report : reports) {
+            result.add(report.getAsJsonObject().get("code").getAsString());
+        }
+        return result;
+    }
+
     public Report getReport(String reportId) {
         log.debug("Preparing to fetch report with id {}", reportId);
-        if(token==null) {
+        if (token == null) {
             token = getToken();
         }
         ReportProvider reportProvider = new ReportProvider(new PlayerProvider(), new FightProvider());
@@ -51,7 +72,7 @@ public class WarcraftLogsClient implements DataClient {
 
     public List<Event> getEvents(Report report, List<EventProvider> eventProviders) {
         log.debug("Preparing to fetch events for report {}", report.getCode());
-        if(token==null) {
+        if (token == null) {
             token = getToken();
         }
         var query = queryBuilder.createQuery(report, eventProviders);
@@ -62,7 +83,7 @@ public class WarcraftLogsClient implements DataClient {
                 .get("report").getAsJsonObject();
 
         List<Event> result = new ArrayList<>();
-        for(EventProvider provider : eventProviders) {
+        for (EventProvider provider : eventProviders) {
             result.addAll(provider.getValues(report, json));
         }
 
@@ -75,7 +96,7 @@ public class WarcraftLogsClient implements DataClient {
             log.debug("Preparing to fetch access token");
             var connection = (HttpURLConnection) new URL("https://www.warcraftlogs.com/oauth/token").openConnection();
 
-            var credentials = new String(Base64.getEncoder().encode(String.format("%s:%s",clientId, clientSecret).getBytes()));
+            var credentials = new String(Base64.getEncoder().encode(String.format("%s:%s", clientId, clientSecret).getBytes()));
             connection.addRequestProperty("Authorization", String.format("Basic %s", credentials));
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Accept", "application/json");
@@ -84,7 +105,7 @@ public class WarcraftLogsClient implements DataClient {
 
             var responseCode = connection.getResponseCode();
 
-            if(responseCode<400) {
+            if (responseCode < 400) {
                 String token = extractToken(getContent(connection.getInputStream()));
                 log.debug("Returning token");
                 return token;
@@ -107,7 +128,7 @@ public class WarcraftLogsClient implements DataClient {
             log.debug("Preparing to execute query");
             var connection = (HttpURLConnection) new URL("https://www.warcraftlogs.com/api/v2/client").openConnection();
             connection.setRequestMethod("POST");
-            connection.setRequestProperty("Authorization", "Bearer "+token);
+            connection.setRequestProperty("Authorization", "Bearer " + token);
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setDoOutput(true);
             String replace = query.replace("\n", "").replace("\t", "");
@@ -118,7 +139,7 @@ public class WarcraftLogsClient implements DataClient {
             var responseCode = connection.getResponseCode();
             log.debug("Got response {}", responseCode);
 
-            if(responseCode<400) {
+            if (responseCode < 400) {
                 return getContent(connection.getInputStream());
             } else {
                 throw new RuntimeException(getContent(connection.getErrorStream()));
@@ -140,7 +161,7 @@ public class WarcraftLogsClient implements DataClient {
             }
 
             return sb.toString();
-        } catch(Exception e) {
+        } catch (Exception e) {
             log.error("Unable to read content", e);
             return null;
         }

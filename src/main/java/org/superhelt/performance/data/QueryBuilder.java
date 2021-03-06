@@ -8,6 +8,15 @@ import java.util.List;
 
 public class QueryBuilder {
 
+    public String listReportQuery(int guildId) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("query { reportData { reports(guildID: ").append(guildId);
+        sb.append(", zoneID: 26) { data {code, zone {id, name}}}}}");
+
+        return convertToQuery(sb.toString());
+    }
+
     public String createQuery(String reportId, List<? extends ValueProvider> valueProviders) {
         StringBuilder sb = new StringBuilder();
 
@@ -23,9 +32,7 @@ public class QueryBuilder {
         sb.append("\t}\n");
         sb.append("}");
 
-        String query = sb.toString().replace("\\", "\\\\").replace("\"", "\\\"");
-
-        return String.format("{\"query\": \"%s\"}", query);
+        return convertToQuery(sb.toString());
     }
 
     public String createQuery(Report report, List<EventProvider> eventProviders) {
@@ -43,8 +50,11 @@ public class QueryBuilder {
         sb.append("\t}\n");
         sb.append("}");
 
-        String query = sb.toString().replace("\\", "\\\\").replace("\"", "\\\"");
 
-        return String.format("{\"query\": \"%s\"}", query);
+        return convertToQuery(sb.toString());
+    }
+
+    private String convertToQuery(String query) {
+        return String.format("{\"query\": \"%s\"}", query.replace("\\", "\\\\").replace("\"", "\\\""));
     }
 }

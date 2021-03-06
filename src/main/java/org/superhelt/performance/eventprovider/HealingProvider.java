@@ -41,21 +41,10 @@ public class HealingProvider implements EventProvider {
 
         List<Event> result = new ArrayList<>();
         for(int i=0;i<data.size();i++) {
-            result.add(parseEvent(data.get(i).getAsJsonObject(), report));
+            EventUtils.parseEvent(data.get(i).getAsJsonObject(), report, e->abilityId).ifPresent(result::add);
         }
 
         log.debug("Found {} events for heal {}", result.size(), name);
         return result;
-    }
-
-    private Event parseEvent(JsonObject event, Report report) {
-        int fightId = event.get("fight").getAsInt();
-        long diff = event.get("timestamp").getAsLong();
-        LocalDateTime timestamp = report.getStartTime().plus(diff, ChronoUnit.MILLIS);
-        int sourceId = event.get("sourceID").getAsInt();
-        int targetId = event.get("targetID").getAsInt();
-        EventType eventType = EventType.fromJson(event.get("type").getAsString());
-
-        return new Event(fightId, timestamp, sourceId, targetId, abilityId, eventType);
     }
 }

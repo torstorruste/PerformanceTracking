@@ -32,6 +32,11 @@ public class CachedDataClient implements DataClient {
     }
 
     @Override
+    public List<String> getReportIds(int guildId) {
+        return dataClient.getReportIds(guildId);
+    }
+
+    @Override
     public Report getReport(String reportId) {
         try {
             Path dataFile = reportDirectory.resolve(reportId+".json");

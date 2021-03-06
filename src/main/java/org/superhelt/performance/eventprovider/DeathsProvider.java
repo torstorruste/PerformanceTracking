@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class DeathsProvider implements EventProvider {
 
@@ -33,25 +34,10 @@ public class DeathsProvider implements EventProvider {
 
         List<Event> result = new ArrayList<>();
         for(int i=0;i<data.size();i++) {
-            result.add(parseEvent(data.get(i).getAsJsonObject(), report));
+            EventUtils.parseEvent(data.get(i).getAsJsonObject(), report, (e)->e.get("killingAbilityGameID") != null?e.get("killingAbilityGameID").getAsInt():-1).ifPresent(result::add);
         }
 
         log.debug("Found {} events for deaths", result.size());
         return result;
-    }
-
-    private Event parseEvent(JsonObject event, Report report) {
-        int fightId = event.get("fight").getAsInt();
-        long diff = event.get("timestamp").getAsLong();
-        LocalDateTime timestamp = report.getStartTime().plus(diff, ChronoUnit.MILLIS);
-        int sourceId = event.get("sourceID").getAsInt();
-        int targetId = event.get("targetID").getAsInt();
-        EventType eventType = EventType.fromJson(event.get("type").getAsString());
-        int abilityId = -1;
-        if(event.get("killingAbilityGameID")!=null) {
-            abilityId = event.get("killingAbilityGameID").getAsInt();
-        }
-
-        return new Event(fightId, timestamp, sourceId, targetId, abilityId, eventType);
     }
 }
