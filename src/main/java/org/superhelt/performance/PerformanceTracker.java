@@ -49,6 +49,22 @@ public class PerformanceTracker {
 
         encounters.sort(Comparator.comparing(Encounter::getStartTime));
         System.out.println(encounters.size());
+
+
+        for(Player player : knownPlayers.values()) {
+            long numEncounters = encounters.stream()
+                    .filter(e->e.getPlayers().contains(player)).count();
+
+            long numHealthstones = encounters.stream()
+                    .filter(e->e.getEvents()!=null)
+                    .flatMap(e->e.getEvents().stream())
+                    .filter(e->e.getAbility()!=null && e.getAbility().equals(Abilities.HEALTHSTONE))
+                    .filter(e->e.getSource().equals(player))
+                    .count();
+
+            System.out.printf("%s participated in %d encounters and used %d health stones (%f/encounter)\n", player.getName(), numEncounters, numHealthstones, ((double)numHealthstones)/numEncounters);
+        }
+
     }
 
     private static List<Encounter> createEncounter(Report report, List<WarcraftLogsEvent> warcraftLogsEvents) {
