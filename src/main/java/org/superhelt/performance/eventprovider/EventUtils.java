@@ -3,7 +3,7 @@ package org.superhelt.performance.eventprovider;
 import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.superhelt.performance.om.Event;
+import org.superhelt.performance.om.warcraftlogs.WarcraftLogsEvent;
 import org.superhelt.performance.om.EventType;
 import org.superhelt.performance.om.warcraftlogs.Report;
 
@@ -16,7 +16,7 @@ public class EventUtils {
 
     private static final Logger log = LoggerFactory.getLogger(EventUtils.class);
 
-    public static Optional<Event> parseEvent(JsonObject event, Report report, Function<JsonObject, Integer> abilityIdParser) {
+    public static Optional<WarcraftLogsEvent> parseEvent(JsonObject event, Report report, Function<JsonObject, Integer> abilityIdParser) {
         try {
             if(event.get("fight")!=null) {
                 int fightId = event.get("fight").getAsInt();
@@ -28,7 +28,7 @@ public class EventUtils {
 
                 int abilityId = abilityIdParser.apply(event);
 
-                return Optional.of(new Event(fightId, timestamp, sourceId, targetId, abilityId, eventType));
+                return Optional.of(new WarcraftLogsEvent(fightId, timestamp, sourceId, targetId, abilityId, eventType));
             } else {
                 log.warn("Ignoring event {}: fight is null", event);
             }

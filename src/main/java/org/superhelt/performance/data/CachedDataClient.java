@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.superhelt.performance.om.Event;
+import org.superhelt.performance.om.warcraftlogs.WarcraftLogsEvent;
 import org.superhelt.performance.om.warcraftlogs.Report;
 import org.superhelt.performance.eventprovider.EventProvider;
 
@@ -54,12 +54,12 @@ public class CachedDataClient implements DataClient {
     }
 
     @Override
-    public List<Event> getEvents(Report report, List<EventProvider> eventProviders) {
+    public List<WarcraftLogsEvent> getEvents(Report report, List<EventProvider> eventProviders) {
         try {
             Path dataFile = eventDirectory.resolve(report.getCode()+".json");
             if(!Files.exists(dataFile)) {
                 log.info("{} does not already exist, fetching events from DataClient", dataFile);
-                List<Event> events = dataClient.getEvents(report, eventProviders);
+                List<WarcraftLogsEvent> events = dataClient.getEvents(report, eventProviders);
                 saveEvents(dataFile, events);
             }
 
@@ -70,12 +70,12 @@ public class CachedDataClient implements DataClient {
         throw new RuntimeException("Unable to get report");
     }
 
-    private List<Event> loadEvents(Path dataFile) throws IOException {
+    private List<WarcraftLogsEvent> loadEvents(Path dataFile) throws IOException {
         log.info("Fetching events from {}", dataFile);
-        return gson.fromJson(readFile(dataFile), new TypeToken<ArrayList<Event>>(){}.getType());
+        return gson.fromJson(readFile(dataFile), new TypeToken<ArrayList<WarcraftLogsEvent>>(){}.getType());
     }
 
-    private void saveEvents(Path dataFile, List<Event> events) throws IOException {
+    private void saveEvents(Path dataFile, List<WarcraftLogsEvent> events) throws IOException {
         if(!Files.exists(eventDirectory)) {
             log.info("Creating directory {}", eventDirectory);
             Files.createDirectory(eventDirectory);

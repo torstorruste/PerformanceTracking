@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.superhelt.performance.om.Event;
+import org.superhelt.performance.om.warcraftlogs.WarcraftLogsEvent;
 import org.superhelt.performance.om.warcraftlogs.Report;
 
 import java.time.Duration;
@@ -24,11 +24,11 @@ public class DeathsProvider implements EventProvider {
     }
 
     @Override
-    public List<Event> getValues(Report report, JsonObject json) {
+    public List<WarcraftLogsEvent> getValues(Report report, JsonObject json) {
         log.debug("Preparing to fetch data for deaths");
         JsonArray data = json.get("Deaths").getAsJsonObject().get("data").getAsJsonArray();
 
-        List<Event> result = new ArrayList<>();
+        List<WarcraftLogsEvent> result = new ArrayList<>();
         for(int i=0;i<data.size();i++) {
             EventUtils.parseEvent(data.get(i).getAsJsonObject(), report, (e)->e.get("killingAbilityGameID") != null?e.get("killingAbilityGameID").getAsInt():-1).ifPresent(result::add);
         }

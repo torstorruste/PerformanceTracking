@@ -5,7 +5,7 @@ import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.superhelt.performance.eventprovider.EventProvider;
-import org.superhelt.performance.om.Event;
+import org.superhelt.performance.om.warcraftlogs.WarcraftLogsEvent;
 import org.superhelt.performance.om.warcraftlogs.Report;
 import org.superhelt.performance.reportprovider.*;
 
@@ -70,7 +70,7 @@ public class WarcraftLogsClient implements DataClient {
         return reportProvider.getValues(json);
     }
 
-    public List<Event> getEvents(Report report, List<EventProvider> eventProviders) {
+    public List<WarcraftLogsEvent> getEvents(Report report, List<EventProvider> eventProviders) {
         log.debug("Preparing to fetch events for report {}", report.getCode());
         if (token == null) {
             token = getToken();
@@ -82,7 +82,7 @@ public class WarcraftLogsClient implements DataClient {
                 .get("reportData").getAsJsonObject()
                 .get("report").getAsJsonObject();
 
-        List<Event> result = new ArrayList<>();
+        List<WarcraftLogsEvent> result = new ArrayList<>();
         for (EventProvider provider : eventProviders) {
             result.addAll(provider.getValues(report, json));
         }
