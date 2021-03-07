@@ -61,12 +61,56 @@ public class Abilities {
     public static final Ability DESCENT = new BossAbility(342923, "Descent", 2398);
 
     // Huntsman (2418)
+    public static final Ability SPREADSHOT = new BossAbility(334404, "Spreadshot", 2418);
 
     // Hungering Destroyer (2383)
 
+    // Sun King (2402)
+    public static final Ability SMOLDERING_REMNANT = new BossAbility(328579, "Smoldering Remnant", 2402);
+    public static final Ability FIERY_STRIKE = new BossAbility(326455, "Fiery Strike", 2402);
+    public static final Ability BLAZING_SURGE = new BossAbility(329518, "Blazing Surge", 2402);
+    public static final Ability SMOLDERING_PLUMAGE = new BossAbility(241254, "Smoldering Plumage", 2402);
+
+    // Artificer (2405)
+    public static final Ability STASIS_TRAP = new BossAbility(326302, "Statis Trap", 2405);
+    public static final Ability RIFT_BLAST = new BossAbility(329256, "Rift Blast", 2405);
+    public static final Ability ANNIHILATE = new BossAbility(328789, "Annihilate", 2405);
+    // TODO: Possesion
+
+    // Darkvein (2406)
+    public static final Ability BOTTLED_ANIMA = new BossAbility(325769, "Bottled Anima", 2406);
+    public static final Ability LINGERING_ANIMA = new BossAbility(325713, "Lingering Anima", 2406);
+
+    // Council of Blood (2412)
+    public static final Ability DARK_RECITAL = new BossAbility(334743, "Dark Recital", 2406);
+    public static final Ability EVASIVE_LUNGE = new BossAbility(327610, "Evasive Lunge", 2406);
+    // TODO: Death to Dancing fever (not jumping)
+    // TODO: Damage to Dutiful Attendant
+
+    // Sludgefist (2399)
+    public static final Ability SHATTERING_CHAIN = new BossAbility(335295, "Shattering Chain", 2399);
+    public static final Ability FALLING_RUBBLE = new BossAbility(332572, "Falling Rubble", 2399);
+    public static final Ability FRACTURED_DEBRIS = new BossAbility(341307, "Fractured Debris (small circle)", 2399);
+    public static final Ability HEEDLESS_CHARGE = new BossAbility(339067, "Heedless Charge", 2399);
+    public static final Ability DESTRUCTIVE_STOMP = new BossAbility(332318, "Destructive Stomp", 2399);
+    public static final Ability STONEQUAKE = new BossAbility(335361, "Stonequake", 2399);
+    // TODO: Seismic Shift splashes
+
+    // Stonelegion Generals (2417)
+    public static final Ability CLUSTER_BOMBARDMENT = new BossAbility(336231, "Cluster Bombardment", 2417);
+    public static final Ability SEISMIC_UPHEAVAL = new BossAbility(334500, "Seismic Upheaval", 2417);
+
     // Sire Denathrius (2407)
     public static final Ability CRESCENDO = new BossAbility(336162, "Crescendo", 2407);
-
+    public static final Ability MASSACRE = new BossAbility(330137, "Massacre", 2407);
+    public static final Ability SEARING_CENSURE = new BossAbility(341426, "Searing Censure", 2407);
+    public static final Ability WRACKING_PAIN = new BossAbility(329181, "Wracking Pain", 2407);
+    public static final Ability RANCOR = new BossAbility(335873, "Rancor", 2407);
+    public static final Ability RAVAGE = new BossAbility(327123, "Ravage", 2407);
+    // TODO: Insatiable hunger and night hunter
+    // TODO: Impale
+    // TODO: Hand of Destruction damage
+    // TODO: Orbs
 
     public static List<Ability> getHeals() {
         return Arrays.asList(HEALTHSTONE, HEALING_POTION);
@@ -88,7 +132,14 @@ public class Abilities {
     public static List<Ability> getMechanics() {
         return Arrays.asList(
                 MURDER_PREY, ECHOING_SONAR, EARSPLITTING_SHRIEK, BLIND_SWIPE, DESCENT,
-                CRESCENDO
+                SPREADSHOT,
+                SMOLDERING_REMNANT,FIERY_STRIKE, BLAZING_SURGE, SMOLDERING_PLUMAGE,
+                STASIS_TRAP, RIFT_BLAST, ANNIHILATE,
+                BOTTLED_ANIMA, LINGERING_ANIMA,
+                DARK_RECITAL, EVASIVE_LUNGE,
+                SHATTERING_CHAIN, FALLING_RUBBLE, FRACTURED_DEBRIS, HEEDLESS_CHARGE, DESTRUCTIVE_STOMP, STONEQUAKE,
+                CLUSTER_BOMBARDMENT, SEISMIC_UPHEAVAL,
+                CRESCENDO, MASSACRE, SEARING_CENSURE, WRACKING_PAIN, RANCOR, RAVAGE
         );
     }
 
