@@ -23,22 +23,10 @@ public class PerformanceTracker {
 
     private static Map<Integer, Boss> knownBosses = new HashMap<>();
     private static Map<Integer, Player> knownPlayers = new HashMap<>();
-    private static Map<Integer, Ability> knownAbilities = new HashMap<>();
+    private static Map<Integer, Ability> knownAbilities = Abilities.getAbilityMap();
 
     public static void main(String[] args) {
         var client = new CachedDataClient(new WarcraftLogsClient(new QueryBuilder()));
-
-        for(Ability ability : Abilities.getDefensives()) {
-            knownAbilities.put(ability.getId(), ability);
-        }
-
-        for(Ability ability : Abilities.getHeals()) {
-            knownAbilities.put(ability.getId(), ability);
-        }
-
-        for(Ability ability : Abilities.getMechanics()) {
-            knownAbilities.put(ability.getId(), ability);
-        }
 
         Map<String, Report> reportMap = new HashMap<>();
         List<Fight> fights = new ArrayList<>();

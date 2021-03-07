@@ -1,7 +1,9 @@
 package org.superhelt.performance.om;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Abilities {
 
@@ -79,5 +81,19 @@ public class Abilities {
         return Arrays.asList(
                 MURDER_PREY, ECHOING_SONAR, EARSPLITTING_SHRIEK, BLIND_SWIPE, DESCENT
         );
+    }
+
+    public static Map<Integer, Ability> getAbilityMap() {
+        Map<Integer, Ability> result = new HashMap<>();
+
+        addAbilities(result, getHeals());
+        addAbilities(result, getDefensives());
+        addAbilities(result, getMechanics());
+
+        return result;
+    }
+
+    private static void addAbilities(Map<Integer, Ability> result, List<Ability> abilities) {
+        abilities.forEach(a->result.put(a.getId(), a));
     }
 }
