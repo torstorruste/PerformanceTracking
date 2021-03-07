@@ -1,6 +1,7 @@
 package org.superhelt.performance.reportprovider;
 
 import com.google.gson.JsonObject;
+import org.superhelt.performance.om.PlayerClass;
 import org.superhelt.performance.om.warcraftlogs.ReportPlayer;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class PlayerProvider implements ValueProvider<List<ReportPlayer>> {
     private ReportPlayer parsePlayer(JsonObject player) {
         int id = player.get("gameID").getAsInt();
         String name = player.get("name").getAsString();
-        String playerClass = player.get("subType").getAsString();
+        PlayerClass playerClass = PlayerClass.valueOf(player.get("subType").getAsString().toUpperCase());
         int reportId = player.get("id").getAsInt();
 
         return new ReportPlayer(id, name, playerClass, reportId);

@@ -22,8 +22,10 @@ public class StatisticsGenerator {
             for(Player player : encounter.getPlayers()) {
                 Map<String, Integer> numbers = new HashMap<>();
                 for(Measure measure : measures) {
-                    int number = measure.calculate(encounter,player);
-                    numbers.put(measure.getName(), number);
+                    if(measure.isRelevant(encounter.getBoss(), player)) {
+                        int number = measure.calculate(encounter, player);
+                        numbers.put(measure.getName(), number);
+                    }
                 }
                 playerStatistics.add(new PlayerStatistics(player, numbers));
             }

@@ -6,9 +6,9 @@ public class Player {
 
     private final int id;
     private final String name;
-    private final String playerClass;
+    private final PlayerClass playerClass;
 
-    public Player(int id, String name, String playerClass) {
+    public Player(int id, String name, PlayerClass playerClass) {
         this.id = id;
         this.name = name;
         this.playerClass = playerClass;
@@ -22,7 +22,7 @@ public class Player {
         return name;
     }
 
-    public String getPlayerClass() {
+    public PlayerClass getPlayerClass() {
         return playerClass;
     }
 

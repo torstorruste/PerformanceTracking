@@ -37,8 +37,7 @@ public class PerformanceTracker {
         List<Fight> fights = new ArrayList<>();
 
         List<Encounter> encounters = new ArrayList<>();
-        //List<String> reportIds = client.getReportIds(277050);
-        List<String> reportIds = Arrays.asList("gapmdVjHQwFh8GMN");
+        List<String> reportIds = client.getReportIds(277050);
 
         for(String reportId : reportIds) {
             var report = client.getReport(reportId);

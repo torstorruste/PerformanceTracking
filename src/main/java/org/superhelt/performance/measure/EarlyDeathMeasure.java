@@ -1,9 +1,6 @@
 package org.superhelt.performance.measure;
 
-import org.superhelt.performance.om.Encounter;
-import org.superhelt.performance.om.Event;
-import org.superhelt.performance.om.EventType;
-import org.superhelt.performance.om.Player;
+import org.superhelt.performance.om.*;
 
 import java.util.Comparator;
 
@@ -21,5 +18,10 @@ public class EarlyDeathMeasure implements Measure {
                 .limit(3)
                 .filter(e->e.getTarget().equals(player))
                 .count();
+    }
+
+    @Override
+    public boolean isRelevant(Boss boss, Player player) {
+        return true;
     }
 }

@@ -12,53 +12,61 @@ public class Abilities {
     public static final Ability HEALING_POTION = new Ability(307192, "Healingpotion");
 
     // Death Knights
-    public static final Ability ANTI_MAGIC_SHELL = new Ability(48707, "Anti Magic Shell");
-    public static final Ability ICEBOUND_FORTITUDE = new Ability(48792, "Icebound Fortitude");
+    public static final Ability ANTI_MAGIC_SHELL = new ClassAbility(48707, "Anti Magic Shell", PlayerClass.DEATHKNIGHT);
+    public static final Ability ICEBOUND_FORTITUDE = new ClassAbility(48792, "Icebound Fortitude", PlayerClass.DEATHKNIGHT);
 
     // Demon Hunter
 
     // Druids
-    public static final Ability BARKSKIN = new Ability(22812, "Barkskin");
-    public static final Ability SURVIVAL_INSTINCTS = new Ability(61336, "Survival Instincts");
+    public static final Ability BARKSKIN = new ClassAbility(22812, "Barkskin", PlayerClass.DRUID);
+    public static final Ability SURVIVAL_INSTINCTS = new ClassAbility(61336, "Survival Instincts", PlayerClass.DRUID);
 
     // Hunter
-    public static final Ability SURVIVAL_OF_THE_FITTEST = new Ability(281195, "Survival Of The Fittest");
-    public static final Ability EXHILIRATION = new Ability(109304, "Exhiliration");
+    public static final Ability SURVIVAL_OF_THE_FITTEST = new ClassAbility(281195, "Survival Of The Fittest", PlayerClass.HUNTER);
+    public static final Ability EXHILIRATION = new ClassAbility(109304, "Exhiliration", PlayerClass.HUNTER);
 
     // Mage
-    public static final Ability ICE_BARRIER = new Ability(11426, "Ice Barrier");
+    public static final Ability ICE_BARRIER = new ClassAbility(11426, "Ice Barrier", PlayerClass.MAGE);
 
     // Monk
-    public static final Ability TOUCH_OF_KARMA = new Ability(122470, "Touch Of Karma");
-    public static final Ability FORTIFYING_BREW = new Ability(243435, "Fortifying Brew");
-    public static final Ability DIFFUSE_MAGIC = new Ability(122783, "Diffuse Magic");
+    public static final Ability TOUCH_OF_KARMA = new ClassAbility(122470, "Touch Of Karma", PlayerClass.MONK);
+    public static final Ability FORTIFYING_BREW = new ClassAbility(243435, "Fortifying Brew", PlayerClass.MONK);
+    public static final Ability DIFFUSE_MAGIC = new ClassAbility(122783, "Diffuse Magic", PlayerClass.MONK);
 
     // Paladin
-    public static final Ability DIVINE_PROTECTION = new Ability(498, "Divine Protection");
+    public static final Ability DIVINE_PROTECTION = new ClassAbility(498, "Divine Protection", PlayerClass.PALADIN);
 
     // Priest
-    public static final Ability FADE = new Ability(586, "Fade");
-    public static final Ability DESPERATE_PRAYER = new Ability(19236, "Desperate Prayer");
+    public static final Ability FADE = new ClassAbility(586, "Fade", PlayerClass.PRIEST);
+    public static final Ability DESPERATE_PRAYER = new ClassAbility(19236, "Desperate Prayer", PlayerClass.PRIEST);
 
     // Rogue
 
     // Shaman
-    public static final Ability ASTRAL_SHIFT = new Ability(108271, "Astral Shift");
+    public static final Ability ASTRAL_SHIFT = new ClassAbility(108271, "Astral Shift", PlayerClass.SHAMAN);
 
     // Warlock
-    public static final Ability UNENDING_RESOLVE = new Ability(104773, "Unending Resolve");
+    public static final Ability UNENDING_RESOLVE = new ClassAbility(104773, "Unending Resolve", PlayerClass.WARLOCK);
 
     // Warriors
-    public static final Ability DIE_BY_THE_SWORD = new Ability(118038, "Die By The Sword");
-    public static final Ability ENRAGED_REGENERATION = new Ability(184364, "Enraged Regeneration");
-    public static final Ability SPELL_REFLECTION = new Ability(23920, "Spell Reflection");
+    public static final Ability DIE_BY_THE_SWORD = new ClassAbility(118038, "Die By The Sword", PlayerClass.WARRIOR);
+    public static final Ability ENRAGED_REGENERATION = new ClassAbility(184364, "Enraged Regeneration", PlayerClass.WARRIOR);
+    public static final Ability SPELL_REFLECTION = new ClassAbility(23920, "Spell Reflection", PlayerClass.WARRIOR);
 
-    // Shriekwing
-    public static final Ability MURDER_PREY = new Ability(345425, "Murder Prey");
-    public static final Ability ECHOING_SONAR = new Ability(343022, "Echoing Sonar");
-    public static final Ability EARSPLITTING_SHRIEK = new Ability(336005, "Earsplitting Shriek");
-    public static final Ability BLIND_SWIPE = new Ability(343005, "Blind Swipe");
-    public static final Ability DESCENT = new Ability(342923, "Descent");
+    // Shriekwing (2398)
+    public static final Ability MURDER_PREY = new BossAbility(345425, "Murder Prey", 2398);
+    public static final Ability ECHOING_SONAR = new BossAbility(343022, "Echoing Sonar", 2398);
+    public static final Ability EARSPLITTING_SHRIEK = new BossAbility(336005, "Earsplitting Shriek", 2398);
+    public static final Ability BLIND_SWIPE = new BossAbility(343005, "Blind Swipe", 2398);
+    public static final Ability DESCENT = new BossAbility(342923, "Descent", 2398);
+
+    // Huntsman (2418)
+
+    // Hungering Destroyer (2383)
+
+    // Sire Denathrius (2407)
+    public static final Ability CRESCENDO = new BossAbility(336162, "Crescendo", 2407);
+
 
     public static List<Ability> getHeals() {
         return Arrays.asList(HEALTHSTONE, HEALING_POTION);
@@ -79,7 +87,8 @@ public class Abilities {
 
     public static List<Ability> getMechanics() {
         return Arrays.asList(
-                MURDER_PREY, ECHOING_SONAR, EARSPLITTING_SHRIEK, BLIND_SWIPE, DESCENT
+                MURDER_PREY, ECHOING_SONAR, EARSPLITTING_SHRIEK, BLIND_SWIPE, DESCENT,
+                CRESCENDO
         );
     }
 

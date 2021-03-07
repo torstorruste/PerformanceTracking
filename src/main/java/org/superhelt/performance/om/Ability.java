@@ -24,6 +24,10 @@ public class Ability {
         return name.replace(" ", "");
     }
 
+    public boolean isRelevant(Boss boss, Player player) {
+        return true;
+    }
+
     @Override
     public String toString() {
         return name;
