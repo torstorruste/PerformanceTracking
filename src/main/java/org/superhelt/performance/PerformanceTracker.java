@@ -1,5 +1,7 @@
 package org.superhelt.performance;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.superhelt.performance.data.CachedDataClient;
@@ -7,6 +9,9 @@ import org.superhelt.performance.data.QueryBuilder;
 import org.superhelt.performance.data.WarcraftLogsClient;
 import org.superhelt.performance.eventprovider.EventProvider;
 import org.superhelt.performance.eventprovider.EventProviders;
+import org.superhelt.performance.measure.EarlyDeathMeasure;
+import org.superhelt.performance.measure.Measure;
+import org.superhelt.performance.measure.Measures;
 import org.superhelt.performance.om.*;
 import org.superhelt.performance.om.warcraftlogs.Fight;
 import org.superhelt.performance.om.warcraftlogs.WarcraftLogsEvent;
@@ -32,7 +37,9 @@ public class PerformanceTracker {
         List<Fight> fights = new ArrayList<>();
 
         List<Encounter> encounters = new ArrayList<>();
-        List<String> reportIds = client.getReportIds(277050);
+        //List<String> reportIds = client.getReportIds(277050);
+        List<String> reportIds = Arrays.asList("gapmdVjHQwFh8GMN");
+
         for(String reportId : reportIds) {
             var report = client.getReport(reportId);
             reportMap.put(report.getCode(), report);
@@ -49,21 +56,11 @@ public class PerformanceTracker {
         }
 
         encounters.sort(Comparator.comparing(Encounter::getStartTime));
-        System.out.println(encounters.size());
 
-        for(Player player : knownPlayers.values()) {
-            long numEncounters = encounters.stream()
-                    .filter(e->e.getPlayers().contains(player)).count();
+        var statistics = new StatisticsGenerator().generateStatistics(encounters, Measures.getAll());
 
-            long numHealthstones = encounters.stream()
-                    .filter(e->e.getEvents()!=null)
-                    .flatMap(e->e.getEvents().stream())
-                    .filter(e->e.getAbility()!=null && e.getAbility().equals(Abilities.HEALTHSTONE))
-                    .filter(e->e.getSource().equals(player))
-                    .count();
-
-            System.out.printf("%s participated in %d encounters and used %d health stones (%f/encounter)\n", player.getName(), numEncounters, numHealthstones, ((double)numHealthstones)/numEncounters);
-        }
+        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer()).setPrettyPrinting().create();
+        System.out.println(gson.toJson(statistics));
     }
 
     private static Map<Integer, LocalDateTime> calculateFirstKills(List<Fight> fights) {
@@ -120,7 +117,7 @@ public class PerformanceTracker {
             var player = players.stream().filter(p->p.getReportId()==id).findFirst().get();
 
             if(!knownPlayers.containsKey(player.getId())) {
-                knownPlayers.put(player.getId(), player);
+                knownPlayers.put(player.getId(), new Player(player.getId(), player.getName(), player.getPlayerClass()));
             }
             result.add(knownPlayers.get(player.getId()));
         }
