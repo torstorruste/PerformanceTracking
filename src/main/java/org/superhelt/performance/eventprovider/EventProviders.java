@@ -2,6 +2,7 @@ package org.superhelt.performance.eventprovider;
 
 import org.superhelt.performance.om.Abilities;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -23,5 +24,14 @@ public class EventProviders {
 
     public static List<EventProvider> mechanics() {
         return Abilities.getMechanics().stream().map(DamageTakenProvider::new).collect(Collectors.toList());
+    }
+
+    public static List<EventProvider> all() {
+        List<EventProvider> result = new ArrayList<>();
+        result.addAll(EventProviders.defensives());
+        result.addAll(EventProviders.heals());
+        result.addAll(EventProviders.deaths());
+        result.addAll(EventProviders.mechanics());
+        return result;
     }
 }

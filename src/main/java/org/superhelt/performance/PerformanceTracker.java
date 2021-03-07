@@ -39,31 +39,17 @@ public class PerformanceTracker {
             fights.addAll(report.getFights());
         }
 
-        fights.sort(Comparator.comparing(Fight::getStartTime));
-        Map<Integer, LocalDateTime> firstKills = new HashMap<>();
-
-        for(Fight fight : fights) {
-            if(fight.isKill() && !firstKills.containsKey(fight.getEncounterId())) {
-                log.info("Killed encounter {} first at {}", fight.getName(), fight.getStartTime());
-                firstKills.put(fight.getEncounterId(), fight.getStartTime());
-            }
-        }
+        Map<Integer, LocalDateTime> firstKills = calculateFirstKills(fights);
 
         for(String reportId : reportIds) {
             Report report = reportMap.get(reportId);
-            List<EventProvider> eventProviders = new ArrayList<>();
-            eventProviders.addAll(EventProviders.defensives());
-            eventProviders.addAll(EventProviders.heals());
-            eventProviders.addAll(EventProviders.deaths());
-            eventProviders.addAll(EventProviders.mechanics());
-            var events = client.getEvents(report, eventProviders);
+            var events = client.getEvents(report, EventProviders.all());
 
             encounters.addAll(createEncounter(report, events, firstKills));
         }
 
         encounters.sort(Comparator.comparing(Encounter::getStartTime));
         System.out.println(encounters.size());
-
 
         for(Player player : knownPlayers.values()) {
             long numEncounters = encounters.stream()
@@ -78,7 +64,19 @@ public class PerformanceTracker {
 
             System.out.printf("%s participated in %d encounters and used %d health stones (%f/encounter)\n", player.getName(), numEncounters, numHealthstones, ((double)numHealthstones)/numEncounters);
         }
+    }
 
+    private static Map<Integer, LocalDateTime> calculateFirstKills(List<Fight> fights) {
+        fights.sort(Comparator.comparing(Fight::getStartTime));
+        Map<Integer, LocalDateTime> firstKills = new HashMap<>();
+
+        for(Fight fight : fights) {
+            if(fight.isKill() && !firstKills.containsKey(fight.getEncounterId())) {
+                log.info("Killed encounter {} first at {}", fight.getName(), fight.getStartTime());
+                firstKills.put(fight.getEncounterId(), fight.getStartTime());
+            }
+        }
+        return firstKills;
     }
 
     private static List<Encounter> createEncounter(Report report, List<WarcraftLogsEvent> warcraftLogsEvents, Map<Integer, LocalDateTime> firstKills) {
