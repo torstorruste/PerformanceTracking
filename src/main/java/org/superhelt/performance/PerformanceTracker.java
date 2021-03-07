@@ -67,6 +67,7 @@ public class PerformanceTracker {
             eventProviders.addAll(EventProviders.defensives());
             eventProviders.addAll(EventProviders.heals());
             eventProviders.addAll(EventProviders.deaths());
+            eventProviders.addAll(EventProviders.mechanics());
             var events = client.getEvents(report, eventProviders);
 
             encounters.addAll(createEncounter(report, events, firstKills));
@@ -120,8 +121,10 @@ public class PerformanceTracker {
         Player target = players.stream().filter(p->p.getReportId()==event.getTargetId()).findFirst().orElse(null);
         Ability ability = knownAbilities.getOrDefault(event.getAbilityId(), null);
         EventType eventType = event.getType();
+        int amount = event.getAmount();
+        int unmitigatedAmount = event.getUnmitigatedAmount();
 
-        return new Event(timestamp, source, target, ability, eventType);
+        return new Event(timestamp, source, target, ability, eventType, amount, unmitigatedAmount);
     }
 
     private static List<Player> getPlayers(List<Integer> playerIds, List<ReportPlayer> players) {

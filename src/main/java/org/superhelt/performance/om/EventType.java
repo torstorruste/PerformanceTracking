@@ -5,6 +5,7 @@ public enum EventType {
     REFRESH_BUFF,
     REMOVE_BUFF,
     HEAL,
+    DAMAGE,
     DEATH;
 
     public static EventType fromJson(String json) {
@@ -14,6 +15,7 @@ public enum EventType {
             case "refreshbuff": return REFRESH_BUFF;
             case "heal": return HEAL;
             case "death": return DEATH;
+            case "damage": return DAMAGE;
             default: throw new IllegalArgumentException("Unknown event type "+json);
         }
     }

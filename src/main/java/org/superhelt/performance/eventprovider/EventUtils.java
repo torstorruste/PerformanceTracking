@@ -25,10 +25,14 @@ public class EventUtils {
                 int sourceId = event.get("sourceID").getAsInt();
                 int targetId = event.get("targetID").getAsInt();
                 EventType eventType = EventType.fromJson(event.get("type").getAsString());
+                int amount = getInt(event, "amount");
+                int mitigated = getInt(event, "mitigated");
+                int unmitigatedAmount = getInt(event, "unmitigatedAmount");
+                int overkill = getInt(event, "overkill");
 
                 int abilityId = abilityIdParser.apply(event);
 
-                return Optional.of(new WarcraftLogsEvent(fightId, timestamp, sourceId, targetId, abilityId, eventType));
+                return Optional.of(new WarcraftLogsEvent(fightId, timestamp, sourceId, targetId, abilityId, eventType, amount, mitigated, unmitigatedAmount, overkill));
             } else {
                 log.warn("Ignoring event {}: fight is null", event);
             }
@@ -36,5 +40,13 @@ public class EventUtils {
             log.error("Unable to parse event {}: {}", event, e.getMessage());
         }
         return Optional.empty();
+    }
+
+    private static int getInt(JsonObject json, String column) {
+        if(json.get(column)!=null) {
+            return json.get(column).getAsInt();
+        } else {
+            return 0;
+        }
     }
 }

@@ -9,13 +9,17 @@ public class Event {
     private final Player target;
     private final Ability ability;
     private final EventType eventType;
+    private final int amount;
+    private final int unmitigatedAmount;
 
-    public Event(LocalDateTime timestamp, Player source, Player target, Ability ability, EventType eventType) {
+    public Event(LocalDateTime timestamp, Player source, Player target, Ability ability, EventType eventType, int amount, int unmitigatedAmount) {
         this.timestamp = timestamp;
         this.source = source;
         this.target = target;
         this.ability = ability;
         this.eventType = eventType;
+        this.amount = amount;
+        this.unmitigatedAmount = unmitigatedAmount;
     }
 
     public LocalDateTime getTimestamp() {
@@ -36,5 +40,13 @@ public class Event {
 
     public EventType getEventType() {
         return eventType;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public int getUnmitigatedAmount() {
+        return unmitigatedAmount;
     }
 }
