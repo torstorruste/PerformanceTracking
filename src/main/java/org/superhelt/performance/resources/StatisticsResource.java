@@ -19,7 +19,10 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,6 +31,8 @@ import java.util.stream.Collectors;
 public class StatisticsResource {
 
     private static final Logger log = LoggerFactory.getLogger(StatisticsResource.class);
+
+    private static final DateTimeFormatter dt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private static final Map<Integer, Boss> knownBosses = new HashMap<>();
     private static final Map<Integer, Player> knownPlayers = new HashMap<>();
@@ -41,17 +46,28 @@ public class StatisticsResource {
 
     @Path("statistics")
     @GET
-    public Response getStatistics(@QueryParam("bossId") Integer bossId) {
+    public Response getStatistics(@QueryParam("bossId") Integer bossId, @QueryParam("progressOnly") boolean progressOnly,
+                                  @QueryParam("from") String dateString) {
+        LocalDate startTime = dateString==null?null:LocalDate.parse(dateString, dt);
+        AggregatedStatistics aggregated = getAggregatedStatistic(bossId, progressOnly, startTime);
+        return Response.ok(aggregated).build();
+    }
+
+    public AggregatedStatistics getAggregatedStatistic(Integer bossId, boolean progressOnly, LocalDate startTime) {
         List<Encounter> encounters = this.encounters;
         if(bossId!=null) {
-            encounters = this.getEncounters().stream().filter(e -> e.getBoss().getId()==bossId).collect(Collectors.toList());
+            encounters = encounters.stream().filter(e -> e.getBoss().getId()==bossId).collect(Collectors.toList());
+        }
+        if(progressOnly) {
+            encounters = encounters.stream().filter(Encounter::isProgress).collect(Collectors.toList());
+        }
+        if(startTime != null) {
+            encounters = encounters.stream().filter(e->e.getStartTime().isAfter(LocalDateTime.of(startTime, LocalTime.MIDNIGHT))).collect(Collectors.toList());
         }
 
         StatisticsGenerator statisticsGenerator = new StatisticsGenerator();
         List<Statistics> statistics = statisticsGenerator.generateStatistics(encounters, Measures.getAll());
-        AggregatedStatistics aggregated = statisticsGenerator.aggregate(statistics);
-
-        return Response.ok(aggregated).build();
+        return statisticsGenerator.aggregate(statistics);
     }
 
     @Path("bosses")
@@ -62,8 +78,9 @@ public class StatisticsResource {
 
     @Path("bosses/{bossId}/statistics")
     @GET
-    public Response getStatisticsByBoss(@PathParam("bossId") int bossId) {
-        return getStatistics(bossId);
+    public Response getStatisticsByBoss(@PathParam("bossId") int bossId, @QueryParam("progressOnly") boolean progressOnly,
+                                        @QueryParam("from") String dateString) {
+        return getStatistics(bossId, progressOnly, dateString);
     }
 
     @Path("bosses/{bossId}/encounters")
