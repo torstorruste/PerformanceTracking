@@ -10,6 +10,8 @@ public class Abilities {
     // Heals
     public static final Ability HEALTHSTONE = new Ability(6262, "Healthstone");
     public static final Ability HEALING_POTION = new Ability(307192, "Healingpotion");
+
+    // Defensives
     public static final Ability FLESHCRAFT = new Ability(324867, "Fleshcraft");
 
     // Death Knights
@@ -121,11 +123,11 @@ public class Abilities {
     // TODO: Orbs
 
     public static List<Ability> getHeals() {
-        return Arrays.asList(HEALTHSTONE, HEALING_POTION, FLESHCRAFT);
+        return Arrays.asList(HEALTHSTONE, HEALING_POTION);
     }
 
     public static List<Ability> getDefensives() {
-        return Arrays.asList(ANTI_MAGIC_SHELL, ICEBOUND_FORTITUDE, LICHBORNE,
+        return Arrays.asList(ANTI_MAGIC_SHELL, ICEBOUND_FORTITUDE, LICHBORNE, FLESHCRAFT,
                 BARKSKIN, SURVIVAL_INSTINCTS,
                 SURVIVAL_OF_THE_FITTEST, EXHILIRATION, ASPECT_OF_THE_TURTLE,
                 ICE_BARRIER, BLAZING_BARRIER, ICE_BLOCK, ALTER_TIME,

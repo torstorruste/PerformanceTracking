@@ -20,7 +20,7 @@ public class DefensiveMeasure implements Measure {
         return (int)encounter.getEvents().stream()
                 .filter(e->e.getEventType()== EventType.APPLY_BUFF)
                 .filter(e->e.getAbility().equals(ability))
-                .filter(e->e.getSource().equals(player))
+                .filter(e->e.getSource()!=null && e.getSource().equals(player))
                 .count();
     }
 
