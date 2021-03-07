@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class StatisticsGenerator {
 
@@ -36,9 +35,9 @@ public class StatisticsGenerator {
 
     public AggregatedStatistics aggregate(List<Statistics> statistics) {
         Map<Player, PlayerStatistics> result = new HashMap<>();
-        for(var statistic : statistics) {
-            for(var data : statistic.getData()) {
-                var player = data.getPlayer();
+        for(Statistics statistic : statistics) {
+            for(PlayerStatistics data : statistic.getData()) {
+                Player player = data.getPlayer();
                 if(!result.containsKey(player)) {
                     result.put(player, data);
                 } else {

@@ -1,5 +1,6 @@
 package org.superhelt.performance.reportprovider;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.superhelt.performance.om.PlayerClass;
 import org.superhelt.performance.om.warcraftlogs.ReportPlayer;
@@ -25,7 +26,7 @@ public class PlayerProvider implements ValueProvider<List<ReportPlayer>> {
 
     @Override
     public List<ReportPlayer> getValues(JsonObject report) {
-        var actors = report.get("masterData").getAsJsonObject().get("actors").getAsJsonArray();
+        JsonArray actors = report.get("masterData").getAsJsonObject().get("actors").getAsJsonArray();
 
         List<ReportPlayer> result = new ArrayList<>();
         for(int i=0;i<actors.size();i++) {

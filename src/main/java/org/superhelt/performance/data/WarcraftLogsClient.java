@@ -1,5 +1,7 @@
 package org.superhelt.performance.data;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.slf4j.Logger;
@@ -39,14 +41,14 @@ public class WarcraftLogsClient implements DataClient {
         String query = queryBuilder.listReportQuery(guildId);
         String response = executeQuery(token, query);
 
-        var reports = JsonParser.parseString(response).getAsJsonObject()
+        JsonArray reports = JsonParser.parseString(response).getAsJsonObject()
                 .get("data").getAsJsonObject()
                 .get("reportData").getAsJsonObject()
                 .get("reports").getAsJsonObject()
                 .get("data").getAsJsonArray();
 
         List<String> result = new ArrayList<>();
-        for (var report : reports) {
+        for (JsonElement report : reports) {
             result.add(report.getAsJsonObject().get("code").getAsString());
         }
         return result;
@@ -59,9 +61,9 @@ public class WarcraftLogsClient implements DataClient {
         }
         ReportProvider reportProvider = new ReportProvider(new PlayerProvider(), new FightProvider());
 
-        var query = queryBuilder.createQuery(reportId, Collections.singletonList(reportProvider));
+        String query = queryBuilder.createQuery(reportId, Collections.singletonList(reportProvider));
         String response = executeQuery(token, query);
-        var json = JsonParser.parseString(response).getAsJsonObject()
+        JsonObject json = JsonParser.parseString(response).getAsJsonObject()
                 .get("data").getAsJsonObject()
                 .get("reportData").getAsJsonObject()
                 .get("report").getAsJsonObject();
@@ -75,9 +77,9 @@ public class WarcraftLogsClient implements DataClient {
         if (token == null) {
             token = getToken();
         }
-        var query = queryBuilder.createQuery(report, eventProviders);
+        String query = queryBuilder.createQuery(report, eventProviders);
         String response = executeQuery(token, query);
-        var json = JsonParser.parseString(response).getAsJsonObject()
+        JsonObject json = JsonParser.parseString(response).getAsJsonObject()
                 .get("data").getAsJsonObject()
                 .get("reportData").getAsJsonObject()
                 .get("report").getAsJsonObject();
@@ -94,16 +96,16 @@ public class WarcraftLogsClient implements DataClient {
     private String getToken() {
         try {
             log.debug("Preparing to fetch access token");
-            var connection = (HttpURLConnection) new URL("https://www.warcraftlogs.com/oauth/token").openConnection();
+            HttpURLConnection connection = (HttpURLConnection) new URL("https://www.warcraftlogs.com/oauth/token").openConnection();
 
-            var credentials = new String(Base64.getEncoder().encode(String.format("%s:%s", clientId, clientSecret).getBytes()));
+            String credentials = new String(Base64.getEncoder().encode(String.format("%s:%s", clientId, clientSecret).getBytes()));
             connection.addRequestProperty("Authorization", String.format("Basic %s", credentials));
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Accept", "application/json");
             connection.setDoOutput(true);
             connection.getOutputStream().write("grant_type=client_credentials".getBytes());
 
-            var responseCode = connection.getResponseCode();
+            int responseCode = connection.getResponseCode();
 
             if (responseCode < 400) {
                 String token = extractToken(getContent(connection.getInputStream()));
@@ -126,7 +128,7 @@ public class WarcraftLogsClient implements DataClient {
     private String executeQuery(String token, String query) {
         try {
             log.debug("Preparing to execute query");
-            var connection = (HttpURLConnection) new URL("https://www.warcraftlogs.com/api/v2/client").openConnection();
+            HttpURLConnection connection = (HttpURLConnection) new URL("https://www.warcraftlogs.com/api/v2/client").openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Authorization", "Bearer " + token);
             connection.setRequestProperty("Content-Type", "application/json");
@@ -136,7 +138,7 @@ public class WarcraftLogsClient implements DataClient {
             connection.getOutputStream().flush();
             connection.getOutputStream().close();
 
-            var responseCode = connection.getResponseCode();
+            int responseCode = connection.getResponseCode();
             log.debug("Got response {}", responseCode);
 
             if (responseCode < 400) {
@@ -152,7 +154,7 @@ public class WarcraftLogsClient implements DataClient {
 
     private String getContent(InputStream is) {
         try {
-            var buf = new BufferedReader(new InputStreamReader(is));
+            BufferedReader buf = new BufferedReader(new InputStreamReader(is));
 
             StringBuilder sb = new StringBuilder();
             String line;

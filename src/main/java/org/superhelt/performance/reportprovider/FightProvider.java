@@ -1,6 +1,7 @@
 package org.superhelt.performance.reportprovider;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.superhelt.performance.om.warcraftlogs.Fight;
 
@@ -31,7 +32,7 @@ public class FightProvider implements ValueProvider<List<Fight>> {
     @Override
     public List<Fight> getValues(JsonObject report) {
         long startTimeLong = report.get("startTime").getAsLong();
-        var startTime = LocalDateTime.ofEpochSecond(startTimeLong/1000, (int)(startTimeLong%1000)*1000000, ZoneOffset.ofHours(1));
+        LocalDateTime startTime = LocalDateTime.ofEpochSecond(startTimeLong/1000, (int)(startTimeLong%1000)*1000000, ZoneOffset.ofHours(1));
 
         JsonArray fights = report.get("fights").getAsJsonArray();
 
@@ -60,7 +61,7 @@ public class FightProvider implements ValueProvider<List<Fight>> {
     private List<Integer> parsePlayerIds(JsonArray ids) {
         List<Integer> result = new ArrayList<>();
 
-        for(var id : ids) {
+        for(JsonElement id : ids) {
             result.add(id.getAsInt());
         }
 

@@ -24,7 +24,7 @@ public class CachedDataClient implements DataClient {
     private final Path eventDirectory;
     private final Gson gson;
 
-    public CachedDataClient(DataClient dataClient) {
+    public CachedDataClient(DataClient dataClient, Path rootPath) {
         this.dataClient = dataClient;
         this.reportDirectory = Paths.get("data");
         this.eventDirectory = Paths.get("events");

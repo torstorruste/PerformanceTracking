@@ -1,37 +1,43 @@
-package org.superhelt.performance;
+package org.superhelt.performance.resources;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.superhelt.performance.StatisticsGenerator;
 import org.superhelt.performance.data.CachedDataClient;
+import org.superhelt.performance.data.DataClient;
 import org.superhelt.performance.data.QueryBuilder;
 import org.superhelt.performance.data.WarcraftLogsClient;
-import org.superhelt.performance.eventprovider.EventProvider;
 import org.superhelt.performance.eventprovider.EventProviders;
-import org.superhelt.performance.measure.EarlyDeathMeasure;
-import org.superhelt.performance.measure.Measure;
 import org.superhelt.performance.measure.Measures;
 import org.superhelt.performance.om.*;
 import org.superhelt.performance.om.warcraftlogs.Fight;
-import org.superhelt.performance.om.warcraftlogs.WarcraftLogsEvent;
 import org.superhelt.performance.om.warcraftlogs.Report;
 import org.superhelt.performance.om.warcraftlogs.ReportPlayer;
+import org.superhelt.performance.om.warcraftlogs.WarcraftLogsEvent;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class PerformanceTracker {
+@Path("statistics")
+@Produces(MediaType.APPLICATION_JSON)
+public class StatisticsResource {
 
-    private static final Logger log = LoggerFactory.getLogger(PerformanceTracker.class);
+    private static final Logger log = LoggerFactory.getLogger(StatisticsResource.class);
 
     private static Map<Integer, Boss> knownBosses = new HashMap<>();
     private static Map<Integer, Player> knownPlayers = new HashMap<>();
     private static Map<Integer, Ability> knownAbilities = Abilities.getAbilityMap();
 
-    public static void main(String[] args) {
-        var client = new CachedDataClient(new WarcraftLogsClient(new QueryBuilder()));
+    @GET
+    public Response getStatistics() {
+        DataClient client = new CachedDataClient(new WarcraftLogsClient(new QueryBuilder()), Paths.get(""));
 
         Map<String, Report> reportMap = new HashMap<>();
         List<Fight> fights = new ArrayList<>();
@@ -40,7 +46,7 @@ public class PerformanceTracker {
         List<String> reportIds = client.getReportIds(277050);
 
         for(String reportId : reportIds) {
-            var report = client.getReport(reportId);
+            Report report = client.getReport(reportId);
             reportMap.put(report.getCode(), report);
             fights.addAll(report.getFights());
         }
@@ -49,7 +55,7 @@ public class PerformanceTracker {
 
         for(String reportId : reportIds) {
             Report report = reportMap.get(reportId);
-            var events = client.getEvents(report, EventProviders.all());
+            List<WarcraftLogsEvent> events = client.getEvents(report, EventProviders.all());
 
             encounters.addAll(createEncounter(report, events, firstKills));
         }
@@ -57,11 +63,10 @@ public class PerformanceTracker {
         encounters.sort(Comparator.comparing(Encounter::getStartTime));
 
         StatisticsGenerator statisticsGenerator = new StatisticsGenerator();
-        var statistics = statisticsGenerator.generateStatistics(encounters, Measures.getAll());
-        var aggregated = statisticsGenerator.aggregate(statistics);
+        List<Statistics> statistics = statisticsGenerator.generateStatistics(encounters, Measures.getAll());
+        AggregatedStatistics aggregated = statisticsGenerator.aggregate(statistics);
 
-        Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer()).setPrettyPrinting().create();
-        System.out.println(gson.toJson(aggregated));
+        return Response.ok(aggregated).build();
     }
 
     private static Map<Integer, LocalDateTime> calculateFirstKills(List<Fight> fights) {
@@ -79,7 +84,7 @@ public class PerformanceTracker {
 
     private static List<Encounter> createEncounter(Report report, List<WarcraftLogsEvent> warcraftLogsEvents, Map<Integer, LocalDateTime> firstKills) {
         List<Encounter> result = new ArrayList<>();
-        for(var fight : report.getFights()) {
+        for(Fight fight : report.getFights()) {
             Boss boss = findBoss(fight.getEncounterId(), fight.getName());
             List<Player> players = getPlayers(fight.getPlayerIds(), report.getPlayers());
             LocalDateTime startTime = fight.getStartTime();
@@ -115,7 +120,7 @@ public class PerformanceTracker {
         List<Player> result = new ArrayList<>();
 
         for(int id : playerIds) {
-            var player = players.stream().filter(p->p.getReportId()==id).findFirst().get();
+            Player player = players.stream().filter(p->p.getReportId()==id).findFirst().get();
 
             if(!knownPlayers.containsKey(player.getId())) {
                 knownPlayers.put(player.getId(), new Player(player.getId(), player.getName(), player.getPlayerClass()));
@@ -132,4 +137,5 @@ public class PerformanceTracker {
         }
         return knownBosses.get(encounterId);
     }
+
 }

@@ -24,7 +24,7 @@ public class DamageTakenProvider implements EventProvider {
 
     @Override
     public String getQueryFragment(Report report) {
-        var endTime = Duration.between(report.getStartTime(), report.getEndTime()).getSeconds()*1000;
+        long endTime = Duration.between(report.getStartTime(), report.getEndTime()).getSeconds()*1000;
 
         return String.format("%s: events(abilityID: %d, startTime: %d, endTime: %d, dataType: DamageTaken) {data}",
                 ability.getWarcraftlogsName(), ability.getId(), 0, endTime);

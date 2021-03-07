@@ -9,4 +9,8 @@ public class AggregatedStatistics {
     public AggregatedStatistics(List<PlayerStatistics> data) {
         this.data = data;
     }
+
+    public List<PlayerStatistics> getData() {
+        return data;
+    }
 }

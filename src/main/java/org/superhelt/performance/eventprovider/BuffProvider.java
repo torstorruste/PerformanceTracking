@@ -9,6 +9,8 @@ import org.superhelt.performance.om.warcraftlogs.WarcraftLogsEvent;
 import org.superhelt.performance.om.warcraftlogs.Report;
 
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class BuffProvider implements EventProvider {
 
     @Override
     public String getQueryFragment(Report report) {
-        var endTime = Duration.between(report.getStartTime(), report.getEndTime()).getSeconds()*1000;
+        long endTime = Duration.between(report.getStartTime(), report.getEndTime()).getSeconds()*1000;
 
         return String.format("%s: events(abilityID: %d, startTime: %d, endTime: %d, dataType: Buffs) {data}",
                 ability.getWarcraftlogsName(), ability.getId(), 0, endTime);

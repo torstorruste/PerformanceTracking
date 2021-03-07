@@ -17,7 +17,7 @@ public class DeathsProvider implements EventProvider {
 
     @Override
     public String getQueryFragment(Report report) {
-        var endTime = Duration.between(report.getStartTime(), report.getEndTime()).getSeconds()*1000;
+        long endTime = Duration.between(report.getStartTime(), report.getEndTime()).getSeconds()*1000;
 
         return String.format("Deaths: events(startTime: %d, endTime: %d, dataType: Deaths) {data}",
                 0, endTime);

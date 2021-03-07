@@ -24,7 +24,7 @@ public class QueryBuilder {
         sb.append("\treportData {\n");
         sb.append("\t\treport(code: \"").append(reportId).append("\") {\n");
         sb.append("\t\t\tcode");
-        for(var provider : valueProviders) {
+        for(ValueProvider provider : valueProviders) {
             sb.append(",\n").append(provider.getQueryFragment());
         }
 
@@ -42,7 +42,7 @@ public class QueryBuilder {
         sb.append("\treportData {\n");
         sb.append("\t\treport(code: \"").append(report.getCode()).append("\") {\n");
         sb.append("\t\t\tcode");
-        for(var provider : eventProviders) {
+        for(EventProvider provider : eventProviders) {
             sb.append(",\n").append(provider.getQueryFragment(report));
         }
 
