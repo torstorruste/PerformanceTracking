@@ -56,10 +56,12 @@ public class PerformanceTracker {
 
         encounters.sort(Comparator.comparing(Encounter::getStartTime));
 
-        var statistics = new StatisticsGenerator().generateStatistics(encounters, Measures.getAll());
+        StatisticsGenerator statisticsGenerator = new StatisticsGenerator();
+        var statistics = statisticsGenerator.generateStatistics(encounters, Measures.getAll());
+        var aggregated = statisticsGenerator.aggregate(statistics);
 
         Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new LocalDateTimeSerializer()).setPrettyPrinting().create();
-        System.out.println(gson.toJson(statistics));
+        System.out.println(gson.toJson(aggregated));
     }
 
     private static Map<Integer, LocalDateTime> calculateFirstKills(List<Fight> fights) {
