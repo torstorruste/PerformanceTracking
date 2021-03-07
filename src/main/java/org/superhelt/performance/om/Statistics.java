@@ -5,7 +5,7 @@ import java.util.List;
 public class Statistics {
 
     private final Encounter encounter;
-    private List<PlayerStatistics> data;
+    private final List<PlayerStatistics> data;
 
     public Statistics(Encounter encounter, List<PlayerStatistics> data) {
         this.encounter = encounter;

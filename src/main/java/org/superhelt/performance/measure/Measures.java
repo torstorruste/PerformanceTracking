@@ -27,6 +27,8 @@ public class Measures {
         result.addAll(getHeals());
         result.addAll(getMechanics());
         result.add(new EarlyDeathMeasure());
+        result.add(new ProgressMeasure());
+        result.add(new FarmMeasure());
 
         return result;
     }
