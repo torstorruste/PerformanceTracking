@@ -1,5 +1,7 @@
 package org.superhelt.performance;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.superhelt.performance.data.CachedDataClient;
 import org.superhelt.performance.data.QueryBuilder;
 import org.superhelt.performance.data.WarcraftLogsClient;
@@ -17,6 +19,8 @@ import java.util.stream.Collectors;
 
 public class PerformanceTracker {
 
+    private static final Logger log = LoggerFactory.getLogger(PerformanceTracker.class);
+
     private static Map<Integer, Boss> knownBosses = new HashMap<>();
     private static Map<Integer, Player> knownPlayers = new HashMap<>();
     private static Map<Integer, Ability> knownAbilities = new HashMap<>();
@@ -32,19 +36,36 @@ public class PerformanceTracker {
             knownAbilities.put(ability.getId(), ability);
         }
 
-        List<Encounter> encounters = new ArrayList<>();
-        for(String reportId : client.getReportIds(277050)) {
+        Map<String, Report> reportMap = new HashMap<>();
+        List<Fight> fights = new ArrayList<>();
 
+        List<Encounter> encounters = new ArrayList<>();
+        List<String> reportIds = client.getReportIds(277050);
+        for(String reportId : reportIds) {
             var report = client.getReport(reportId);
+            reportMap.put(report.getCode(), report);
+            fights.addAll(report.getFights());
+        }
+
+        fights.sort(Comparator.comparing(Fight::getStartTime));
+        Map<Integer, LocalDateTime> firstKills = new HashMap<>();
+
+        for(Fight fight : fights) {
+            if(fight.isKill() && !firstKills.containsKey(fight.getEncounterId())) {
+                log.info("Killed encounter {} first at {}", fight.getName(), fight.getStartTime());
+                firstKills.put(fight.getEncounterId(), fight.getStartTime());
+            }
+        }
+
+        for(String reportId : reportIds) {
+            Report report = reportMap.get(reportId);
             List<EventProvider> eventProviders = new ArrayList<>();
             eventProviders.addAll(EventProviders.defensives());
             eventProviders.addAll(EventProviders.heals());
             eventProviders.addAll(EventProviders.deaths());
             var events = client.getEvents(report, eventProviders);
 
-            System.out.println(report.getCode());
-            System.out.println(events.size());
-            encounters.addAll(createEncounter(report, events));
+            encounters.addAll(createEncounter(report, events, firstKills));
         }
 
         encounters.sort(Comparator.comparing(Encounter::getStartTime));
@@ -67,7 +88,7 @@ public class PerformanceTracker {
 
     }
 
-    private static List<Encounter> createEncounter(Report report, List<WarcraftLogsEvent> warcraftLogsEvents) {
+    private static List<Encounter> createEncounter(Report report, List<WarcraftLogsEvent> warcraftLogsEvents, Map<Integer, LocalDateTime> firstKills) {
         List<Encounter> result = new ArrayList<>();
         for(var fight : report.getFights()) {
             Boss boss = findBoss(fight.getEncounterId(), fight.getName());
@@ -75,8 +96,9 @@ public class PerformanceTracker {
             LocalDateTime startTime = fight.getStartTime();
             LocalDateTime endTime = fight.getEndTime();
             List<Event> events = translateEvents(warcraftLogsEvents, report.getPlayers(), fight);
+            boolean progress = !firstKills.containsKey(boss.getId()) || !startTime.isAfter(firstKills.get(boss.getId()));
 
-            result.add(new Encounter(boss, players, events, startTime, endTime));
+            result.add(new Encounter(boss, players, events, startTime, endTime, progress));
         }
         return result;
     }
