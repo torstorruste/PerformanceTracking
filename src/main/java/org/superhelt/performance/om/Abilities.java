@@ -10,10 +10,12 @@ public class Abilities {
     // Heals
     public static final Ability HEALTHSTONE = new Ability(6262, "Healthstone");
     public static final Ability HEALING_POTION = new Ability(307192, "Healingpotion");
+    public static final Ability FLESHCRAFT = new Ability(324867, "Fleshcraft");
 
     // Death Knights
     public static final Ability ANTI_MAGIC_SHELL = new ClassAbility(48707, "Anti Magic Shell", PlayerClass.DEATHKNIGHT);
     public static final Ability ICEBOUND_FORTITUDE = new ClassAbility(48792, "Icebound Fortitude", PlayerClass.DEATHKNIGHT);
+    public static final Ability LICHBORNE = new ClassAbility(49039, "Lichborne", PlayerClass.DEATHKNIGHT);
 
     // Demon Hunter
 
@@ -24,9 +26,13 @@ public class Abilities {
     // Hunter
     public static final Ability SURVIVAL_OF_THE_FITTEST = new ClassAbility(281195, "Survival Of The Fittest", PlayerClass.HUNTER);
     public static final Ability EXHILIRATION = new ClassAbility(109304, "Exhiliration", PlayerClass.HUNTER);
+    public static final Ability ASPECT_OF_THE_TURTLE = new ClassAbility(186265, "Aspect of the Turtle", PlayerClass.HUNTER);
 
     // Mage
     public static final Ability ICE_BARRIER = new ClassAbility(11426, "Ice Barrier", PlayerClass.MAGE);
+    public static final Ability BLAZING_BARRIER = new ClassAbility(235313, "Blazing Barrier", PlayerClass.MAGE);
+    public static final Ability ALTER_TIME = new ClassAbility(110909, "Alter Time", PlayerClass.MAGE);
+    public static final Ability ICE_BLOCK = new ClassAbility(45438, "Ice Block", PlayerClass.MAGE);
 
     // Monk
     public static final Ability TOUCH_OF_KARMA = new ClassAbility(122470, "Touch Of Karma", PlayerClass.MONK);
@@ -35,6 +41,7 @@ public class Abilities {
 
     // Paladin
     public static final Ability DIVINE_PROTECTION = new ClassAbility(498, "Divine Protection", PlayerClass.PALADIN);
+    public static final Ability DIVINE_SHIELD = new ClassAbility(642, "Divine Shield", PlayerClass.PALADIN);
 
     // Priest
     public static final Ability FADE = new ClassAbility(586, "Fade", PlayerClass.PRIEST);
@@ -44,6 +51,7 @@ public class Abilities {
 
     // Shaman
     public static final Ability ASTRAL_SHIFT = new ClassAbility(108271, "Astral Shift", PlayerClass.SHAMAN);
+    public static final Ability HARDEN_SKIN = new ClassAbility(118337, "Harden Skin", PlayerClass.SHAMAN);
 
     // Warlock
     public static final Ability UNENDING_RESOLVE = new ClassAbility(104773, "Unending Resolve", PlayerClass.WARLOCK);
@@ -90,7 +98,7 @@ public class Abilities {
     // Sludgefist (2399)
     public static final Ability SHATTERING_CHAIN = new BossAbility(335295, "Shattering Chain", 2399);
     public static final Ability FALLING_RUBBLE = new BossAbility(332572, "Falling Rubble", 2399);
-    public static final Ability FRACTURED_DEBRIS = new BossAbility(341307, "Fractured Debris (small circle)", 2399);
+    public static final Ability FRACTURED_DEBRIS = new BossAbility(341307, "Fractured Debris", 2399);
     public static final Ability HEEDLESS_CHARGE = new BossAbility(339067, "Heedless Charge", 2399);
     public static final Ability DESTRUCTIVE_STOMP = new BossAbility(332318, "Destructive Stomp", 2399);
     public static final Ability STONEQUAKE = new BossAbility(335361, "Stonequake", 2399);
@@ -113,18 +121,18 @@ public class Abilities {
     // TODO: Orbs
 
     public static List<Ability> getHeals() {
-        return Arrays.asList(HEALTHSTONE, HEALING_POTION);
+        return Arrays.asList(HEALTHSTONE, HEALING_POTION, FLESHCRAFT);
     }
 
     public static List<Ability> getDefensives() {
-        return Arrays.asList(ANTI_MAGIC_SHELL, ICEBOUND_FORTITUDE,
+        return Arrays.asList(ANTI_MAGIC_SHELL, ICEBOUND_FORTITUDE, LICHBORNE,
                 BARKSKIN, SURVIVAL_INSTINCTS,
-                SURVIVAL_OF_THE_FITTEST, EXHILIRATION,
-                ICE_BARRIER,
+                SURVIVAL_OF_THE_FITTEST, EXHILIRATION, ASPECT_OF_THE_TURTLE,
+                ICE_BARRIER, BLAZING_BARRIER, ICE_BLOCK, ALTER_TIME,
                 TOUCH_OF_KARMA, FORTIFYING_BREW, DIFFUSE_MAGIC,
-                DIVINE_PROTECTION,
+                DIVINE_PROTECTION, DIVINE_SHIELD,
                 FADE, DESPERATE_PRAYER,
-                ASTRAL_SHIFT,
+                ASTRAL_SHIFT, HARDEN_SKIN,
                 UNENDING_RESOLVE,
                 DIE_BY_THE_SWORD, ENRAGED_REGENERATION, SPELL_REFLECTION);
     }
