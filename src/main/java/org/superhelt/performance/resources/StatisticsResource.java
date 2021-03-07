@@ -15,9 +15,7 @@ import org.superhelt.performance.om.warcraftlogs.Report;
 import org.superhelt.performance.om.warcraftlogs.ReportPlayer;
 import org.superhelt.performance.om.warcraftlogs.WarcraftLogsEvent;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.nio.file.Paths;
@@ -25,18 +23,57 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Path("statistics")
+@Path("/")
 @Produces(MediaType.APPLICATION_JSON)
 public class StatisticsResource {
 
     private static final Logger log = LoggerFactory.getLogger(StatisticsResource.class);
 
-    private static Map<Integer, Boss> knownBosses = new HashMap<>();
-    private static Map<Integer, Player> knownPlayers = new HashMap<>();
-    private static Map<Integer, Ability> knownAbilities = Abilities.getAbilityMap();
+    private static final Map<Integer, Boss> knownBosses = new HashMap<>();
+    private static final Map<Integer, Player> knownPlayers = new HashMap<>();
+    private static final Map<Integer, Ability> knownAbilities = Abilities.getAbilityMap();
 
+    private final List<Encounter> encounters;
+
+    public StatisticsResource() {
+        encounters = getEncounters();
+    }
+
+    @Path("statistics")
     @GET
-    public Response getStatistics() {
+    public Response getStatistics(@QueryParam("bossId") Integer bossId) {
+        List<Encounter> encounters = this.encounters;
+        if(bossId!=null) {
+            encounters = this.getEncounters().stream().filter(e -> e.getBoss().getId()==bossId).collect(Collectors.toList());
+        }
+
+        StatisticsGenerator statisticsGenerator = new StatisticsGenerator();
+        List<Statistics> statistics = statisticsGenerator.generateStatistics(encounters, Measures.getAll());
+        AggregatedStatistics aggregated = statisticsGenerator.aggregate(statistics);
+
+        return Response.ok(aggregated).build();
+    }
+
+    @Path("bosses")
+    @GET
+    public Response getBosses() {
+        return Response.ok(knownBosses.values()).build();
+    }
+
+    @Path("bosses/{bossId}/statistics")
+    @GET
+    public Response getStatisticsByBoss(@PathParam("bossId") int bossId) {
+        return getStatistics(bossId);
+    }
+
+    @Path("bosses/{bossId}/encounters")
+    @GET
+    public Response getEncountersByBoss(@PathParam("bossId") int bossId) {
+        List<Encounter> relevant = encounters.stream().filter(e->e.getBoss().getId()==bossId).collect(Collectors.toList());
+        return Response.ok(relevant).build();
+    }
+
+    private List<Encounter> getEncounters() {
         DataClient client = new CachedDataClient(new WarcraftLogsClient(new QueryBuilder()), Paths.get(""));
 
         Map<String, Report> reportMap = new HashMap<>();
@@ -61,12 +98,7 @@ public class StatisticsResource {
         }
 
         encounters.sort(Comparator.comparing(Encounter::getStartTime));
-
-        StatisticsGenerator statisticsGenerator = new StatisticsGenerator();
-        List<Statistics> statistics = statisticsGenerator.generateStatistics(encounters, Measures.getAll());
-        AggregatedStatistics aggregated = statisticsGenerator.aggregate(statistics);
-
-        return Response.ok(aggregated).build();
+        return encounters;
     }
 
     private static Map<Integer, LocalDateTime> calculateFirstKills(List<Fight> fights) {
