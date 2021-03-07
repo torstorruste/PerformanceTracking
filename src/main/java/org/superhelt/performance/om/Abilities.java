@@ -51,6 +51,13 @@ public class Abilities {
     public static final Ability ENRAGED_REGENERATION = new Ability(184364, "Enraged Regeneration");
     public static final Ability SPELL_REFLECTION = new Ability(23920, "Spell Reflection");
 
+    // Shriekwing
+    public static final Ability MURDER_PREY = new Ability(345425, "Murder Prey");
+    public static final Ability ECHOING_SONAR = new Ability(343022, "Echoing Sonar");
+    public static final Ability EARSPLITTING_SHRIEK = new Ability(336005, "Earsplitting Shriek");
+    public static final Ability BLIND_SWIPE = new Ability(343005, "Blind Swipe");
+    public static final Ability DESCENT = new Ability(342923, "Descent");
+
     public static List<Ability> getHeals() {
         return Arrays.asList(HEALTHSTONE, HEALING_POTION);
     }
@@ -66,5 +73,11 @@ public class Abilities {
                 ASTRAL_SHIFT,
                 UNENDING_RESOLVE,
                 DIE_BY_THE_SWORD, ENRAGED_REGENERATION, SPELL_REFLECTION);
+    }
+
+    public static List<Ability> getMechanics() {
+        return Arrays.asList(
+                MURDER_PREY, ECHOING_SONAR, EARSPLITTING_SHRIEK, BLIND_SWIPE, DESCENT
+        );
     }
 }

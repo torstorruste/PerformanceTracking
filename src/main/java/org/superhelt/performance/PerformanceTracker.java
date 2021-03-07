@@ -36,6 +36,10 @@ public class PerformanceTracker {
             knownAbilities.put(ability.getId(), ability);
         }
 
+        for(Ability ability : Abilities.getMechanics()) {
+            knownAbilities.put(ability.getId(), ability);
+        }
+
         Map<String, Report> reportMap = new HashMap<>();
         List<Fight> fights = new ArrayList<>();
 
@@ -113,10 +117,11 @@ public class PerformanceTracker {
     private static Event createEvent(WarcraftLogsEvent event, List<ReportPlayer> players) {
         LocalDateTime timestamp = event.getTimestamp();
         Player source = players.stream().filter(p->p.getReportId()==event.getSourceId()).findFirst().orElse(null);
+        Player target = players.stream().filter(p->p.getReportId()==event.getTargetId()).findFirst().orElse(null);
         Ability ability = knownAbilities.getOrDefault(event.getAbilityId(), null);
         EventType eventType = event.getType();
 
-        return new Event(timestamp, source, ability, eventType);
+        return new Event(timestamp, source, target, ability, eventType);
     }
 
     private static List<Player> getPlayers(List<Integer> playerIds, List<ReportPlayer> players) {

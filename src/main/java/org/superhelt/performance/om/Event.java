@@ -6,12 +6,14 @@ public class Event {
 
     private final LocalDateTime timestamp;
     private final Player source;
+    private final Player target;
     private final Ability ability;
     private final EventType eventType;
 
-    public Event(LocalDateTime timestamp, Player source, Ability ability, EventType eventType) {
+    public Event(LocalDateTime timestamp, Player source, Player target, Ability ability, EventType eventType) {
         this.timestamp = timestamp;
         this.source = source;
+        this.target = target;
         this.ability = ability;
         this.eventType = eventType;
     }
@@ -22,6 +24,10 @@ public class Event {
 
     public Player getSource() {
         return source;
+    }
+
+    public Player getTarget() {
+        return target;
     }
 
     public Ability getAbility() {
