@@ -33,7 +33,17 @@ public class CachedDataClient implements DataClient {
 
     @Override
     public List<String> getReportIds(int guildId) {
-        return dataClient.getReportIds(guildId);
+        try {
+            Path dataFile = reportDirectory.resolve("reports-" + guildId + ".json");
+            if (!Files.exists(dataFile)) {
+                log.info("{} does not already exist, fetching reports from DataClient", dataFile);
+                List<String> reportIds = dataClient.getReportIds(guildId);
+                saveData(dataFile, reportIds);
+            }
+            return loadList(dataFile);
+        } catch(IOException e) {
+            throw new RuntimeException("Unable to get report Id", e);
+        }
     }
 
     @Override
@@ -43,10 +53,10 @@ public class CachedDataClient implements DataClient {
             if(!Files.exists(dataFile)) {
                 log.info("{} does not already exist, fetching from DataClient", dataFile);
                 Report report = dataClient.getReport(reportId);
-                saveReport(dataFile, report);
+                saveData(dataFile, report);
             }
 
-            return loadReport(dataFile);
+            return loadData(dataFile, Report.class);
         } catch (IOException e) {
             log.error("Unable to get report {}", reportId, e);
         }
@@ -60,7 +70,7 @@ public class CachedDataClient implements DataClient {
             if(!Files.exists(dataFile)) {
                 log.info("{} does not already exist, fetching events from DataClient", dataFile);
                 List<WarcraftLogsEvent> events = dataClient.getEvents(report, eventProviders);
-                saveEvents(dataFile, events);
+                saveData(dataFile, events);
             }
 
             return loadEvents(dataFile);
@@ -70,37 +80,32 @@ public class CachedDataClient implements DataClient {
         throw new RuntimeException("Unable to get report");
     }
 
-    private List<WarcraftLogsEvent> loadEvents(Path dataFile) throws IOException {
-        log.info("Fetching events from {}", dataFile);
-        return gson.fromJson(readFile(dataFile), new TypeToken<ArrayList<WarcraftLogsEvent>>(){}.getType());
-    }
-
-    private void saveEvents(Path dataFile, List<WarcraftLogsEvent> events) throws IOException {
-        if(!Files.exists(eventDirectory)) {
-            log.info("Creating directory {}", eventDirectory);
-            Files.createDirectory(eventDirectory);
+    private <T> void saveData(Path dataFile, T data) throws IOException {
+        if(!Files.exists(dataFile.getParent())) {
+            log.info("Creating directory {}", dataFile.getParent());
+            Files.createDirectory(dataFile.getParent());
         }
 
-        log.info("Writing events to {}", dataFile);
-        Files.write(dataFile, gson.toJson(events).getBytes());
+        log.info("Writing data to {}", dataFile);
+        Files.write(dataFile, gson.toJson(data).getBytes());
     }
 
-    private Report loadReport(Path dataFile) throws IOException {
-        log.info("Loading report from {}", dataFile);
-        return gson.fromJson(readFile(dataFile), Report.class);
+    private <T> T loadData(Path dataFile, Class<T> tClass) throws IOException {
+        log.info("Fetching data from {}", dataFile);
+        return gson.fromJson(readFile(dataFile), tClass);
     }
 
-    private void saveReport(Path dataFile, Report report) throws IOException {
-        if (!Files.exists(reportDirectory)) {
-            log.info("Creating directory {}", eventDirectory);
-            Files.createDirectory(reportDirectory);
-        }
-
-        log.info("Writing report to {}", dataFile);
-        Files.write(dataFile, gson.toJson(report).getBytes());
+    private <T> T loadList(Path dataFile) throws IOException {
+        log.info("Fetching data from {}", dataFile);
+        return gson.fromJson(readFile(dataFile), new TypeToken<ArrayList<T>>(){}.getType());
     }
 
     public String readFile(Path path) throws IOException {
         return new String(Files.readAllBytes(path));
+    }
+
+    private List<WarcraftLogsEvent> loadEvents(Path dataFile) throws IOException {
+        log.info("Fetching events from {}", dataFile);
+        return gson.fromJson(readFile(dataFile), new TypeToken<ArrayList<WarcraftLogsEvent>>(){}.getType());
     }
 }
