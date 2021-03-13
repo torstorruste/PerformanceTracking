@@ -13,4 +13,8 @@ public class BossAbility extends Ability {
     public boolean isRelevant(Boss boss, Player player) {
         return boss.getId()==bossId;
     }
+
+    public int getBossId() {
+        return bossId;
+    }
 }

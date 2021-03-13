@@ -16,6 +16,24 @@ public class DefensiveMeasure implements Measure {
     }
 
     @Override
+    public MeasureType getType() {
+        return MeasureType.DEFENSIVE;
+    }
+
+    @Override
+    public Integer getBossId() {
+        return null;
+    }
+
+    @Override
+    public PlayerClass getPlayerClass() {
+        if(ability instanceof ClassAbility) {
+            return ((ClassAbility)ability).getPlayerClass();
+        }
+        return null;
+    }
+
+    @Override
     public int calculate(Encounter encounter, Player player) {
         return (int)encounter.getEvents().stream()
                 .filter(e->e.getEventType()== EventType.APPLY_BUFF)

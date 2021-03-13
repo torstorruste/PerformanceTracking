@@ -76,6 +76,9 @@ public class StatisticsResource {
 
         StatisticsGenerator statisticsGenerator = new StatisticsGenerator();
         List<Statistics> statistics = statisticsGenerator.generateStatistics(encounters, Measures.getAll());
+
+        statistics = statistics.stream().map(s->new Statistics(null, s.getData())).collect(Collectors.toList());;
+
         return statisticsGenerator.aggregate(statistics);
     }
 
@@ -97,6 +100,12 @@ public class StatisticsResource {
     public Response getEncountersByBoss(@PathParam("bossId") int bossId) {
         List<Encounter> relevant = encounters.stream().filter(e->e.getBoss().getId()==bossId).collect(Collectors.toList());
         return Response.ok(relevant).build();
+    }
+
+    @Path("measures")
+    @GET
+    public Response getMeasures() {
+        return Response.ok(Measures.getAll()).build();
     }
 
     private List<Encounter> getEncounters() {
@@ -178,12 +187,15 @@ public class StatisticsResource {
         List<Player> result = new ArrayList<>();
 
         for(int id : playerIds) {
-            Player player = players.stream().filter(p->p.getReportId()==id).findFirst().get();
+            Optional<ReportPlayer> optional = players.stream().filter(p->p.getReportId()==id).findFirst();
 
-            if(!knownPlayers.containsKey(player.getId())) {
-                knownPlayers.put(player.getId(), new Player(player.getId(), player.getName(), player.getPlayerClass()));
+            if(optional.isPresent()) {
+                ReportPlayer player = optional.get();
+                if (!knownPlayers.containsKey(player.getId())) {
+                    knownPlayers.put(player.getId(), new Player(player.getId(), player.getName(), player.getPlayerClass()));
+                }
+                result.add(knownPlayers.get(player.getId()));
             }
-            result.add(knownPlayers.get(player.getId()));
         }
 
         return result;

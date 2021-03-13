@@ -16,6 +16,24 @@ public class DamageTakenMeasure implements Measure {
     }
 
     @Override
+    public MeasureType getType() {
+        return MeasureType.MECHANIC;
+    }
+
+    @Override
+    public Integer getBossId() {
+        if(ability instanceof BossAbility) {
+            return ((BossAbility)ability).getBossId();
+        }
+        return null;
+    }
+
+    @Override
+    public PlayerClass getPlayerClass() {
+        return null;
+    }
+
+    @Override
     public int calculate(Encounter encounter, Player player) {
         return (int)encounter.getEvents().stream()
                 .filter(e->e.getEventType()== EventType.DAMAGE)

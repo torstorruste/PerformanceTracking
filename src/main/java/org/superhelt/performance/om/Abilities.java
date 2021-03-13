@@ -92,8 +92,8 @@ public class Abilities {
     public static final Ability LINGERING_ANIMA = new BossAbility(325713, "Lingering Anima", 2406);
 
     // Council of Blood (2412)
-    public static final Ability DARK_RECITAL = new BossAbility(334743, "Dark Recital", 2406);
-    public static final Ability EVASIVE_LUNGE = new BossAbility(327610, "Evasive Lunge", 2406);
+    public static final Ability DARK_RECITAL = new BossAbility(334743, "Dark Recital", 2412);
+    public static final Ability EVASIVE_LUNGE = new BossAbility(327610, "Evasive Lunge", 2412);
     // TODO: Death to Dancing fever (not jumping)
     // TODO: Damage to Dutiful Attendant
 
