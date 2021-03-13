@@ -38,10 +38,9 @@ public class StatisticsResource {
     private static final Map<Integer, Player> knownPlayers = new HashMap<>();
     private static final Map<Integer, Ability> knownAbilities = Abilities.getAbilityMap();
 
-    private final List<Encounter> encounters;
+    private static final List<Encounter> encounters = getEncounters();
 
     public StatisticsResource() {
-        encounters = getEncounters();
     }
 
     @Path("players")
@@ -108,7 +107,7 @@ public class StatisticsResource {
         return Response.ok(Measures.getAll()).build();
     }
 
-    private List<Encounter> getEncounters() {
+    private static List<Encounter> getEncounters() {
         DataClient client = new CachedDataClient(new WarcraftLogsClient(new QueryBuilder()), Paths.get(""));
 
         Map<String, Report> reportMap = new HashMap<>();

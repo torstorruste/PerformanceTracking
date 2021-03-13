@@ -1,7 +1,7 @@
 apply plugin: 'war'
 
 group 'org.superhelt.performance'
-version '2021.1'
+version '2021.2'
 
 repositories {
     mavenCentral()
