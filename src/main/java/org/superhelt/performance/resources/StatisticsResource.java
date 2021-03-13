@@ -44,6 +44,15 @@ public class StatisticsResource {
         encounters = getEncounters();
     }
 
+    @Path("players")
+    @GET
+    public Response getPlayers() {
+        List<Player> players = knownPlayers.values().stream()
+                .sorted(Comparator.comparing(Player::getName))
+                .collect(Collectors.toList());
+        return Response.ok(players).build();
+    }
+
     @Path("statistics")
     @GET
     public Response getStatistics(@QueryParam("bossId") Integer bossId, @QueryParam("progressOnly") boolean progressOnly,
