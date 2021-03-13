@@ -4,5 +4,6 @@ public enum MeasureType {
     DEFENSIVE,
     HEALING,
     MECHANIC,
-    BASIC
+    BASIC,
+    ENCOUNTER
 }

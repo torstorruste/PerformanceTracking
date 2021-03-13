@@ -14,7 +14,7 @@ public class FarmMeasure implements Measure {
 
     @Override
     public MeasureType getType() {
-        return MeasureType.BASIC;
+        return MeasureType.ENCOUNTER;
     }
 
     @Override
