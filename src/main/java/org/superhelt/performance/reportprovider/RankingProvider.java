@@ -18,7 +18,7 @@ public class RankingProvider implements ValueProvider<List<ReportRanking>> {
 
     @Override
     public String getQueryFragment() {
-        return String.format("%1$s: rankings(difficulty: 5, playerMetric: %1$s)", rankingType.toString().toLowerCase());
+        return String.format("%1$s: rankings(difficulty: 5, playerMetric: %1$s, timeframe: Historical)", rankingType.toString().toLowerCase());
     }
 
     @Override
