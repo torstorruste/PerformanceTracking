@@ -1,5 +1,6 @@
 package org.superhelt.performance.resources;
 
+import ch.qos.logback.core.filter.Filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.superhelt.performance.StatisticsGenerator;
@@ -21,7 +22,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Path("/")
 @Produces(MediaType.APPLICATION_JSON)
@@ -52,22 +55,26 @@ public class StatisticsResource {
     @Path("players/{playerId}/rankings")
     @GET
     public Response getRankings(@PathParam("playerId") int playerId) {
-        List<Ranking> rankings = encounters.stream().flatMap(e -> e.getDpsRankings().stream()).filter(r -> r.getPlayer().getId() == playerId).collect(Collectors.toList());
-        return Response.ok(rankings).build();
+        return Response.ok(getRankingsFromEncounters(r->r.getPlayer().getId()==playerId)).build();
     }
 
     @Path("rankings")
     @GET
     public Response getRankings() {
-        List<Ranking> rankings = encounters.stream().flatMap(e -> e.getDpsRankings().stream()).collect(Collectors.toList());
-        return Response.ok(rankings).build();
+        return Response.ok(getRankingsFromEncounters(r->true)).build();
     }
 
     @Path("bosses/{bossId}/rankings")
     @GET
     public Response getRankingsByBoss(@PathParam("bossId") int bossId) {
-        List<Ranking> rankings = encounters.stream().flatMap(e -> e.getDpsRankings().stream()).filter(r -> r.getBoss().getId() == bossId).collect(Collectors.toList());
-        return Response.ok(rankings).build();
+        return Response.ok(getRankingsFromEncounters(r -> r.getBoss().getId() == bossId)).build();
+    }
+
+    private List<Ranking> getRankingsFromEncounters(Predicate<Ranking> filter) {
+        Stream<Ranking> dps = encounters.stream().flatMap(e->e.getDpsRankings().stream());
+        Stream<Ranking> hps = encounters.stream().flatMap(e->e.getHpsRankings().stream());
+
+        return Stream.concat(dps, hps).filter(filter).collect(Collectors.toList());
     }
 
     @Path("statistics")
