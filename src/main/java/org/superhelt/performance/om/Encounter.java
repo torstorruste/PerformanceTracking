@@ -18,14 +18,18 @@ public class Encounter {
     @JsonSerialize(using= LocalDateTimeSerializer.class)
     private final LocalDateTime endTime;
     private final boolean progress;
+    private final List<Ranking> dpsRankings;
+    private final List<Ranking> hpsRankings;
 
-    public Encounter(Boss boss, List<Player> players, List<Event> events, LocalDateTime startTime, LocalDateTime endTime, boolean progress) {
+    public Encounter(Boss boss, List<Player> players, List<Event> events, LocalDateTime startTime, LocalDateTime endTime, boolean progress, List<Ranking> dpsRankings, List<Ranking> hpsRankings) {
         this.boss = boss;
         this.players = players;
         this.events = events;
         this.startTime = startTime;
         this.endTime = endTime;
         this.progress = progress;
+        this.dpsRankings = dpsRankings;
+        this.hpsRankings = hpsRankings;
     }
 
     public Boss getBoss() {
@@ -50,5 +54,13 @@ public class Encounter {
 
     public boolean isProgress() {
         return progress;
+    }
+
+    public List<Ranking> getDpsRankings() {
+        return dpsRankings;
+    }
+
+    public List<Ranking> getHpsRankings() {
+        return hpsRankings;
     }
 }

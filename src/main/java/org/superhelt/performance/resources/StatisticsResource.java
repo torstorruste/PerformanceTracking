@@ -10,10 +10,7 @@ import org.superhelt.performance.data.WarcraftLogsClient;
 import org.superhelt.performance.eventprovider.EventProviders;
 import org.superhelt.performance.measure.Measures;
 import org.superhelt.performance.om.*;
-import org.superhelt.performance.om.warcraftlogs.Fight;
-import org.superhelt.performance.om.warcraftlogs.Report;
-import org.superhelt.performance.om.warcraftlogs.ReportPlayer;
-import org.superhelt.performance.om.warcraftlogs.WarcraftLogsEvent;
+import org.superhelt.performance.om.warcraftlogs.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -50,6 +47,27 @@ public class StatisticsResource {
                 .sorted(Comparator.comparing(Player::getName))
                 .collect(Collectors.toList());
         return Response.ok(players).build();
+    }
+
+    @Path("players/{playerId}/rankings")
+    @GET
+    public Response getRankings(@PathParam("playerId") int playerId) {
+        List<Ranking> rankings = encounters.stream().flatMap(e -> e.getDpsRankings().stream()).filter(r -> r.getPlayer().getId() == playerId).collect(Collectors.toList());
+        return Response.ok(rankings).build();
+    }
+
+    @Path("rankings")
+    @GET
+    public Response getRankings() {
+        List<Ranking> rankings = encounters.stream().flatMap(e -> e.getDpsRankings().stream()).collect(Collectors.toList());
+        return Response.ok(rankings).build();
+    }
+
+    @Path("bosses/{bossId}/rankings")
+    @GET
+    public Response getRankingsByBoss(@PathParam("bossId") int bossId) {
+        List<Ranking> rankings = encounters.stream().flatMap(e -> e.getDpsRankings().stream()).filter(r -> r.getBoss().getId() == bossId).collect(Collectors.toList());
+        return Response.ok(rankings).build();
     }
 
     @Path("statistics")
@@ -157,9 +175,28 @@ public class StatisticsResource {
             LocalDateTime endTime = fight.getEndTime();
             List<Event> events = translateEvents(warcraftLogsEvents, report.getPlayers(), fight);
             boolean progress = !firstKills.containsKey(boss.getId()) || !startTime.isAfter(firstKills.get(boss.getId()));
+            List<Ranking> dpsRankings = createRankings(report.getDpsRankings(fight.getId()), players, boss, startTime);
+            List<Ranking> hpsRankings = createRankings(report.getHpsRankings(fight.getId()), players, boss, startTime);
 
-            result.add(new Encounter(boss, players, events, startTime, endTime, progress));
+            result.add(new Encounter(boss, players, events, startTime, endTime, progress, dpsRankings, hpsRankings));
         }
+        return result;
+    }
+
+    private static List<Ranking> createRankings(List<ReportRanking> rankings, List<Player> players, Boss boss, LocalDateTime timestamp) {
+        List<Ranking> result = new ArrayList<>();
+
+        for(ReportRanking rank : rankings) {
+            Optional<Player> player = players.stream().filter(p->p.getName().equals(rank.getPlayerName())).findFirst();
+
+            if(player.isPresent()) {
+                result.add(new Ranking(boss, player.get(), timestamp, rank.getRankingType(), rank.getRankPercent()));
+            } else {
+                // TODO: Figure out a better way to match player and ranking than by name
+                log.error("Unable to find player with name {}", rank.getPlayerName());
+            }
+        }
+
         return result;
     }
 

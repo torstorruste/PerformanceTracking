@@ -7,6 +7,7 @@ import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.superhelt.performance.eventprovider.EventProvider;
+import org.superhelt.performance.om.RankingType;
 import org.superhelt.performance.om.warcraftlogs.WarcraftLogsEvent;
 import org.superhelt.performance.om.warcraftlogs.Report;
 import org.superhelt.performance.reportprovider.*;
@@ -59,7 +60,9 @@ public class WarcraftLogsClient implements DataClient {
         if (token == null) {
             token = getToken();
         }
-        ReportProvider reportProvider = new ReportProvider(new PlayerProvider(), new FightProvider());
+        ReportProvider reportProvider = new ReportProvider(
+                new PlayerProvider(), new FightProvider(),
+                new RankingProvider(RankingType.DPS), new RankingProvider(RankingType.HPS));
 
         String query = queryBuilder.createQuery(reportId, Collections.singletonList(reportProvider));
         String response = executeQuery(token, query);

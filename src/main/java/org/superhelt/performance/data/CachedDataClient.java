@@ -82,21 +82,21 @@ public class CachedDataClient implements DataClient {
 
     private <T> void saveData(Path dataFile, T data) throws IOException {
         if(!Files.exists(dataFile.getParent())) {
-            log.info("Creating directory {}", dataFile.getParent());
+            log.info("Creating directory {}", dataFile.getParent().toAbsolutePath());
             Files.createDirectory(dataFile.getParent());
         }
 
-        log.info("Writing data to {}", dataFile);
+        log.info("Writing data to {}", dataFile.toAbsolutePath());
         Files.write(dataFile, gson.toJson(data).getBytes());
     }
 
     private <T> T loadData(Path dataFile, Class<T> tClass) throws IOException {
-        log.info("Fetching data from {}", dataFile);
+        log.info("Fetching data from {}", dataFile.toAbsolutePath());
         return gson.fromJson(readFile(dataFile), tClass);
     }
 
     private <T> T loadList(Path dataFile) throws IOException {
-        log.info("Fetching data from {}", dataFile);
+        log.info("Fetching data from {}", dataFile.toAbsolutePath());
         return gson.fromJson(readFile(dataFile), new TypeToken<ArrayList<T>>(){}.getType());
     }
 
@@ -105,7 +105,7 @@ public class CachedDataClient implements DataClient {
     }
 
     private List<WarcraftLogsEvent> loadEvents(Path dataFile) throws IOException {
-        log.info("Fetching events from {}", dataFile);
+        log.info("Fetching events from {}", dataFile.toAbsolutePath());
         return gson.fromJson(readFile(dataFile), new TypeToken<ArrayList<WarcraftLogsEvent>>(){}.getType());
     }
 }

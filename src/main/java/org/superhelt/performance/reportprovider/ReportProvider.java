@@ -1,6 +1,7 @@
 package org.superhelt.performance.reportprovider;
 
 import com.google.gson.JsonObject;
+import org.superhelt.performance.om.warcraftlogs.ReportRanking;
 import org.superhelt.performance.om.warcraftlogs.Fight;
 import org.superhelt.performance.om.warcraftlogs.Report;
 import org.superhelt.performance.om.warcraftlogs.ReportPlayer;
@@ -13,10 +14,14 @@ public class ReportProvider implements ValueProvider<Report> {
 
     private final PlayerProvider playerProvider;
     private final FightProvider fightProvider;
+    private final RankingProvider dpsRankingProvider;
+    private final RankingProvider hpsRankingProvider;
 
-    public ReportProvider(PlayerProvider playerProvider, FightProvider fightProvider) {
+    public ReportProvider(PlayerProvider playerProvider, FightProvider fightProvider, RankingProvider dpsRankingProvider, RankingProvider hpsRankingProvider) {
         this.playerProvider = playerProvider;
         this.fightProvider = fightProvider;
+        this.dpsRankingProvider = dpsRankingProvider;
+        this.hpsRankingProvider = hpsRankingProvider;
     }
 
     @Override
@@ -26,6 +31,8 @@ public class ReportProvider implements ValueProvider<Report> {
         sb.append("\t\t\tendTime,\n");
         sb.append(playerProvider.getQueryFragment());
         sb.append(fightProvider.getQueryFragment());
+        sb.append(dpsRankingProvider.getQueryFragment());
+        sb.append(hpsRankingProvider.getQueryFragment());
 
         return sb.toString();
     }
@@ -40,7 +47,9 @@ public class ReportProvider implements ValueProvider<Report> {
 
         List<Fight> fights = fightProvider.getValues(report);
         List<ReportPlayer> players = playerProvider.getValues(report);
+        List<ReportRanking> dpsRankings = dpsRankingProvider.getValues(report);
+        List<ReportRanking> hpsRankings = hpsRankingProvider.getValues(report);
 
-        return new Report(code, fights, players, startTime, endTime);
+        return new Report(code, fights, players, dpsRankings, hpsRankings, startTime, endTime);
     }
 }
