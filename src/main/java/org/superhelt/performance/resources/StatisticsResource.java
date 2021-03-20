@@ -106,10 +106,32 @@ public class StatisticsResource {
         return statisticsGenerator.aggregate(statistics);
     }
 
+    private void addBoss(List<Boss> result, Collection<Boss> source, String name) {
+        Optional<Boss> candidate = source.stream().filter(b -> b.getName().equals(name)).findFirst();
+
+        candidate.ifPresent(result::add);
+    }
+
     @Path("bosses")
     @GET
     public Response getBosses() {
-        return Response.ok(knownBosses.values()).build();
+        Collection<Boss> bosses = knownBosses.values();
+        List<Boss> result = new ArrayList<>();
+        addBoss(result, bosses, "Shriekwing");
+        addBoss(result, bosses, "Huntsman Altimor");
+        addBoss(result, bosses, "Hungering Destroyer");
+        addBoss(result, bosses, "Sun King's Salvation");
+        addBoss(result, bosses, "Artificer Xy'mox");
+        addBoss(result, bosses, "Lady Inerva Darkvein");
+        addBoss(result, bosses, "The Council of Blood");
+        addBoss(result, bosses, "Sludgefist");
+        addBoss(result, bosses, "Stone Legion Generals");
+        addBoss(result, bosses, "Sire Denathrius");
+
+        bosses.stream().filter(b->!result.contains(b))
+                .forEach(result::add);
+
+        return Response.ok(result).build();
     }
 
     @Path("bosses/{bossId}/statistics")
