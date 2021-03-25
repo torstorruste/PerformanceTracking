@@ -35,9 +35,7 @@ public class StatisticsGenerator {
 
     public AggregatedStatistics aggregate(List<Statistics> statistics) {
         Map<Player, PlayerStatistics> result = new HashMap<>();
-        List<Encounter> encounters = new ArrayList<>();
         for(Statistics statistic : statistics) {
-            encounters.add(statistic.getEncounter());
             for(PlayerStatistics data : statistic.getData()) {
                 Player player = data.getPlayer();
                 if(!result.containsKey(player)) {
@@ -48,6 +46,6 @@ public class StatisticsGenerator {
             }
         }
 
-        return new AggregatedStatistics(encounters, new ArrayList<>(result.values()));
+        return new AggregatedStatistics(new ArrayList<>(result.values()));
     }
 }

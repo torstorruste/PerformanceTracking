@@ -31,6 +31,17 @@ public class CachedDataClient implements DataClient {
         this.gson = new Gson();
     }
 
+    public void deleteReportOverview(int guildId) {
+        try {
+            Path dataFile = reportDirectory.resolve("reports-" + guildId + ".json");
+            if (Files.exists(dataFile)) {
+                Files.delete(dataFile);
+            }
+        } catch(IOException e) {
+            throw new RuntimeException("Unable to delete report");
+        }
+    }
+
     @Override
     public List<String> getReportIds(int guildId) {
         try {

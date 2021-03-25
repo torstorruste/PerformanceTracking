@@ -1,11 +1,9 @@
 package org.superhelt.performance.resources;
 
-import ch.qos.logback.core.filter.Filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.superhelt.performance.StatisticsGenerator;
 import org.superhelt.performance.data.CachedDataClient;
-import org.superhelt.performance.data.DataClient;
 import org.superhelt.performance.data.QueryBuilder;
 import org.superhelt.performance.data.WarcraftLogsClient;
 import org.superhelt.performance.eventprovider.EventProviders;
@@ -32,20 +30,36 @@ public class StatisticsResource {
 
     private static final Logger log = LoggerFactory.getLogger(StatisticsResource.class);
 
+    private static final int guildId = 277050;
     private static final DateTimeFormatter dt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private static final Map<Integer, Boss> knownBosses = new HashMap<>();
     private static final Map<Integer, Player> knownPlayers = new HashMap<>();
     private static final Map<Integer, Ability> knownAbilities = Abilities.getAbilityMap();
+    private static final CachedDataClient client = new CachedDataClient(new WarcraftLogsClient(new QueryBuilder()), Paths.get(""));
 
-    private static final List<Encounter> encounters = getEncounters();
+    private static List<Encounter> encounters = null;
+
 
     public StatisticsResource() {
+    }
+
+    @Path("refresh")
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response refresh() {
+        client.deleteReportOverview(guildId);
+        encounters = getEncounters();
+        LocalDateTime startTime = encounters.get(encounters.size() - 1).getStartTime();
+        return Response.ok(dt.format(startTime)).build();
     }
 
     @Path("players")
     @GET
     public Response getPlayers() {
+        if(encounters==null) {
+            encounters = getEncounters();
+        }
         List<Player> players = knownPlayers.values().stream()
                 .sorted(Comparator.comparing(Player::getName))
                 .collect(Collectors.toList());
@@ -71,6 +85,9 @@ public class StatisticsResource {
     }
 
     private List<Ranking> getRankingsFromEncounters(Predicate<Ranking> filter) {
+        if(encounters==null) {
+            encounters = getEncounters();
+        }
         Stream<Ranking> dps = encounters.stream().flatMap(e->e.getDpsRankings().stream());
         Stream<Ranking> hps = encounters.stream().flatMap(e->e.getHpsRankings().stream());
 
@@ -79,20 +96,34 @@ public class StatisticsResource {
 
     @Path("statistics")
     @GET
-    public Response getStatistics(@QueryParam("bossId") Integer bossId, @QueryParam("progressOnly") boolean progressOnly,
+    public Response getStatistics(@QueryParam("bossId") Integer bossId, @QueryParam("encounterType") String encounterTypeString,
                                   @QueryParam("from") String dateString) {
+        if(encounters==null) {
+            encounters = getEncounters();
+        }
         LocalDate startTime = dateString==null?null:LocalDate.parse(dateString, dt);
-        AggregatedStatistics aggregated = getAggregatedStatistic(bossId, progressOnly, startTime);
+
+        EncounterType encounterType = parseEncounterType(encounterTypeString);
+
+        AggregatedStatistics aggregated = getAggregatedStatistic(bossId, encounterType, startTime);
         return Response.ok(aggregated).build();
     }
 
-    public AggregatedStatistics getAggregatedStatistic(Integer bossId, boolean progressOnly, LocalDate startTime) {
+    private EncounterType parseEncounterType(String encounterTypeString) {
+        if(encounterTypeString==null) return EncounterType.BOTH;
+        return EncounterType.valueOf(encounterTypeString.toUpperCase());
+    }
+
+    public AggregatedStatistics getAggregatedStatistic(Integer bossId, EncounterType encounterType, LocalDate startTime) {
+        if(encounters==null) {
+            encounters = getEncounters();
+        }
         List<Encounter> encounters = this.encounters;
         if(bossId!=null) {
             encounters = encounters.stream().filter(e -> e.getBoss().getId()==bossId).collect(Collectors.toList());
         }
-        if(progressOnly) {
-            encounters = encounters.stream().filter(Encounter::isProgress).collect(Collectors.toList());
+        if(encounterType!=EncounterType.BOTH) {
+            encounters = encounters.stream().filter(e->e.getEncounterType()==encounterType).collect(Collectors.toList());
         }
         if(startTime != null) {
             encounters = encounters.stream().filter(e->e.getStartTime().isAfter(LocalDateTime.of(startTime, LocalTime.MIDNIGHT))).collect(Collectors.toList());
@@ -115,6 +146,9 @@ public class StatisticsResource {
     @Path("bosses")
     @GET
     public Response getBosses() {
+        if(encounters==null) {
+            encounters = getEncounters();
+        }
         Collection<Boss> bosses = knownBosses.values();
         List<Boss> result = new ArrayList<>();
         addBoss(result, bosses, "Shriekwing");
@@ -136,9 +170,9 @@ public class StatisticsResource {
 
     @Path("bosses/{bossId}/statistics")
     @GET
-    public Response getStatisticsByBoss(@PathParam("bossId") int bossId, @QueryParam("progressOnly") boolean progressOnly,
+    public Response getStatisticsByBoss(@PathParam("bossId") int bossId, @QueryParam("encounterType") String encounterTypeString,
                                         @QueryParam("from") String dateString) {
-        return getStatistics(bossId, progressOnly, dateString);
+        return getStatistics(bossId, encounterTypeString, dateString);
     }
 
     @Path("bosses/{bossId}/encounters")
@@ -151,18 +185,20 @@ public class StatisticsResource {
     @Path("measures")
     @GET
     public Response getMeasures() {
+        if(encounters==null) {
+            encounters = getEncounters();
+        }
         return Response.ok(Measures.getAll()).build();
     }
 
     private static List<Encounter> getEncounters() {
-        DataClient client = new CachedDataClient(new WarcraftLogsClient(new QueryBuilder()), Paths.get(""));
-
         Map<String, Report> reportMap = new HashMap<>();
         List<Fight> fights = new ArrayList<>();
 
         List<Encounter> encounters = new ArrayList<>();
-        List<String> reportIds = client.getReportIds(277050);
+        List<String> reportIds = client.getReportIds(guildId);
 
+        log.info("fetching reports");
         for(String reportId : reportIds) {
             Report report = client.getReport(reportId);
             reportMap.put(report.getCode(), report);
@@ -171,6 +207,7 @@ public class StatisticsResource {
 
         Map<Integer, LocalDateTime> firstKills = calculateFirstKills(fights);
 
+        log.info("Fetching events");
         for(String reportId : reportIds) {
             Report report = reportMap.get(reportId);
             List<WarcraftLogsEvent> events = client.getEvents(report, EventProviders.all());
@@ -178,6 +215,7 @@ public class StatisticsResource {
             encounters.addAll(createEncounter(report, events, firstKills));
         }
 
+        log.info("Sorting encounters");
         encounters.sort(Comparator.comparing(Encounter::getStartTime));
         return encounters;
     }
@@ -204,10 +242,11 @@ public class StatisticsResource {
             LocalDateTime endTime = fight.getEndTime();
             List<Event> events = translateEvents(warcraftLogsEvents, report.getPlayers(), fight);
             boolean progress = !firstKills.containsKey(boss.getId()) || !startTime.isAfter(firstKills.get(boss.getId()));
+            EncounterType encounterType = progress ? EncounterType.PROGRESS : EncounterType.FARM;
             List<Ranking> dpsRankings = createRankings(report.getDpsRankings(fight.getId()), players, boss, startTime);
             List<Ranking> hpsRankings = createRankings(report.getHpsRankings(fight.getId()), players, boss, startTime);
 
-            result.add(new Encounter(boss, players, events, startTime, endTime, progress, dpsRankings, hpsRankings));
+            result.add(new Encounter(boss, players, events, startTime, endTime, encounterType, dpsRankings, hpsRankings));
         }
         return result;
     }

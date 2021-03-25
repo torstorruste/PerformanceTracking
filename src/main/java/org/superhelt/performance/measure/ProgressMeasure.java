@@ -1,9 +1,6 @@
 package org.superhelt.performance.measure;
 
-import org.superhelt.performance.om.Boss;
-import org.superhelt.performance.om.Encounter;
-import org.superhelt.performance.om.Player;
-import org.superhelt.performance.om.PlayerClass;
+import org.superhelt.performance.om.*;
 
 public class ProgressMeasure implements Measure {
     @Override
@@ -28,7 +25,7 @@ public class ProgressMeasure implements Measure {
 
     @Override
     public int calculate(Encounter encounter, Player player) {
-        return encounter.isProgress()?1:0;
+        return encounter.getEncounterType()==EncounterType.PROGRESS?1:0;
     }
 
     @Override

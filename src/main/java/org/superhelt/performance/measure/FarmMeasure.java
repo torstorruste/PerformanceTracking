@@ -1,9 +1,6 @@
 package org.superhelt.performance.measure;
 
-import org.superhelt.performance.om.Boss;
-import org.superhelt.performance.om.Encounter;
-import org.superhelt.performance.om.Player;
-import org.superhelt.performance.om.PlayerClass;
+import org.superhelt.performance.om.*;
 
 public class FarmMeasure implements Measure {
 
@@ -29,7 +26,7 @@ public class FarmMeasure implements Measure {
 
     @Override
     public int calculate(Encounter encounter, Player player) {
-        return encounter.isProgress()?0:1;
+        return encounter.getEncounterType()==EncounterType.FARM?1:0;
     }
 
     @Override

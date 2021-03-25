@@ -2,6 +2,8 @@ package org.superhelt.performance.reportprovider;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.superhelt.performance.om.warcraftlogs.ReportRanking;
 import org.superhelt.performance.om.RankingType;
 
@@ -9,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RankingProvider implements ValueProvider<List<ReportRanking>> {
+
+    private static final Logger log = LoggerFactory.getLogger(RankingProvider.class);
 
     private final RankingType rankingType;
 
@@ -43,10 +47,14 @@ public class RankingProvider implements ValueProvider<List<ReportRanking>> {
 
         for(int i=0;i<array.size();i++) {
             JsonObject jsonObject = array.get(i).getAsJsonObject();
-            String playerName = jsonObject.get("name").getAsString();
-            int rankPercent = jsonObject.get("rankPercent").getAsInt();
+            try {
+                String playerName = jsonObject.get("name").getAsString();
+                int rankPercent = jsonObject.get("rankPercent").getAsInt();
 
-            result.add(new ReportRanking(fightId, playerName, rankingType, rankPercent));
+                result.add(new ReportRanking(fightId, playerName, rankingType, rankPercent));
+            } catch(Exception e) {
+                log.error("Unable to parse rank {}", jsonObject);
+            }
         }
 
         return result;
