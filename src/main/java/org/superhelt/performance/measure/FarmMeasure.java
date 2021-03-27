@@ -15,16 +15,6 @@ public class FarmMeasure implements Measure {
     }
 
     @Override
-    public Integer getBossId() {
-        return null;
-    }
-
-    @Override
-    public PlayerClass getPlayerClass() {
-        return null;
-    }
-
-    @Override
     public int calculate(Encounter encounter, Player player) {
         return encounter.getEncounterType()==EncounterType.FARM?1:0;
     }

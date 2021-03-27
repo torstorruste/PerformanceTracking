@@ -23,6 +23,7 @@ public class Measures {
 
     public static List<Measure> getAdvancedMechanics() {
         return Arrays.asList(
+                new VolatileEjectionDoubleMeasure(),
                 new NightHunterSoakMeasure(),
                 new NightHunterDoubleSoakMeasure()
         );

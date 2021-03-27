@@ -19,16 +19,6 @@ public class NightHunterSoakMeasure implements Measure {
     }
 
     @Override
-    public Integer getBossId() {
-        return 2407;
-    }
-
-    @Override
-    public PlayerClass getPlayerClass() {
-        return null;
-    }
-
-    @Override
     public int calculate(Encounter encounter, Player player) {
         int numBuffs = (int)encounter.getEvents().stream()
                 .filter(e->e.getEventType() == EventType.APPLY_DEBUFF)
@@ -50,6 +40,6 @@ public class NightHunterSoakMeasure implements Measure {
 
     @Override
     public boolean isRelevant(Boss boss, Player player) {
-        return boss.getId()==getBossId();
+        return boss.getId()==Bosses.SIRE;
     }
 }

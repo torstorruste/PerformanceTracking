@@ -21,16 +21,6 @@ public class CastMeasure implements Measure {
     }
 
     @Override
-    public Integer getBossId() {
-        return null;
-    }
-
-    @Override
-    public PlayerClass getPlayerClass() {
-        return null;
-    }
-
-    @Override
     public int calculate(Encounter encounter, Player player) {
         return (int)encounter.getEvents().stream()
                 .filter(e->e.getEventType()== EventType.CAST)
