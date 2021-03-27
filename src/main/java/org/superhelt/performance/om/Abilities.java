@@ -93,7 +93,7 @@ public class Abilities {
     public static final Ability STASIS_TRAP = new BossAbility(326302, "Statis Trap", ARTIFICER);
     public static final Ability RIFT_BLAST = new BossAbility(329256, "Rift Blast", ARTIFICER);
     public static final Ability ANNIHILATE = new BossAbility(328789, "Annihilate", ARTIFICER);
-    // TODO: Possesion
+    public static final Ability POSSESSION = new BossAbility(327414, "Possession", ARTIFICER);
 
     // Darkvein
     public static final Ability BOTTLED_ANIMA = new BossAbility(325769, "Bottled Anima", DARKVEIN);
@@ -151,7 +151,7 @@ public class Abilities {
                 DIE_BY_THE_SWORD, ENRAGED_REGENERATION, SPELL_REFLECTION);
     }
 
-    public static List<Ability> getMechanics() {
+    public static List<Ability> getDamageMechanics() {
         return Arrays.asList(
                 MURDER_PREY, ECHOING_SONAR, EARSPLITTING_SHRIEK, BLIND_SWIPE, DESCENT,
                 SPREADSHOT,
@@ -162,6 +162,12 @@ public class Abilities {
                 SHATTERING_CHAIN, FALLING_RUBBLE, FRACTURED_DEBRIS, HEEDLESS_CHARGE, DESTRUCTIVE_STOMP, STONEQUAKE,
                 CLUSTER_BOMBARDMENT, SEISMIC_UPHEAVAL,
                 CRESCENDO, MASSACRE, SEARING_CENSURE, WRACKING_PAIN, RANCOR, RAVAGE, NEUTRALIZE
+        );
+    }
+
+    public static List<Ability> getDebuffMechanics() {
+        return Arrays.asList(
+                POSSESSION
         );
     }
 
@@ -182,7 +188,8 @@ public class Abilities {
 
         addAbilities(result, getHeals());
         addAbilities(result, getDefensives());
-        addAbilities(result, getMechanics());
+        addAbilities(result, getDamageMechanics());
+        addAbilities(result, getDebuffMechanics());
         addAbilities(result, getDamageTaken());
         addAbilities(result, getDebuffs());
 

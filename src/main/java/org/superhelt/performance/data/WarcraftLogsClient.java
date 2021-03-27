@@ -19,7 +19,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class WarcraftLogsClient implements DataClient {
 

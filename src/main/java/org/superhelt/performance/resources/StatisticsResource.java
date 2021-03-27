@@ -297,7 +297,7 @@ public class StatisticsResource {
         int unmitigatedAmount = event.getUnmitigatedAmount();
 
         if(ability==null) {
-            log.warn("Unable to find ability with id {}", event.getAbilityId());
+            log.debug("Unable to find ability with id {}", event.getAbilityId());
         }
 
         return new Event(timestamp, source, target, ability, eventType, amount, unmitigatedAmount);

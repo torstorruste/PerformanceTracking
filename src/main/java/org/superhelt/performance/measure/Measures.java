@@ -18,7 +18,11 @@ public class Measures {
     }
 
     public static List<Measure> getMechanics() {
-        return Abilities.getMechanics().stream().map(DamageTakenMeasure::new).collect(Collectors.toList());
+        return Abilities.getDamageMechanics().stream().map(DamageTakenMeasure::new).collect(Collectors.toList());
+    }
+
+    public static List<Measure> getDebuffMechanics() {
+        return Abilities.getDebuffMechanics().stream().map(DebuffMeasure::new).collect(Collectors.toList());
     }
 
     public static List<Measure> getAdvancedMechanics() {
@@ -37,6 +41,7 @@ public class Measures {
         result.addAll(getDefensives());
         result.addAll(getHeals());
         result.addAll(getMechanics());
+        result.addAll(getDebuffMechanics());
         result.addAll(getAdvancedMechanics());
         result.add(new EarlyDeathMeasure());
         result.add(new ProgressMeasure());

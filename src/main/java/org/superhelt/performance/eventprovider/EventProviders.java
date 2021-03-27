@@ -21,8 +21,12 @@ public class EventProviders {
         return Abilities.getDefensives().stream().map(BuffProvider::new).collect(Collectors.toList());
     }
 
-    public static List<EventProvider> mechanics() {
-        return Abilities.getMechanics().stream().map(DamageTakenProvider::new).collect(Collectors.toList());
+    public static List<EventProvider> damageMechanics() {
+        return Abilities.getDamageMechanics().stream().map(DamageTakenProvider::new).collect(Collectors.toList());
+    }
+
+    public static List<EventProvider> debuffMechanics() {
+        return Abilities.getDebuffMechanics().stream().map(DebuffProvider::new).collect(Collectors.toList());
     }
 
     public static List<EventProvider> advancedMechanics() {
@@ -37,7 +41,8 @@ public class EventProviders {
         result.addAll(EventProviders.defensives());
         result.addAll(EventProviders.consumables());
         result.addAll(EventProviders.deaths());
-        result.addAll(EventProviders.mechanics());
+        result.addAll(EventProviders.damageMechanics());
+        result.addAll(EventProviders.debuffMechanics());
         result.addAll(EventProviders.advancedMechanics());
         return result;
     }
