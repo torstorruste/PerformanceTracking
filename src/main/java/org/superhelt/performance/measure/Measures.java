@@ -25,7 +25,8 @@ public class Measures {
         return Arrays.asList(
                 new VolatileEjectionDoubleMeasure(),
                 new NightHunterSoakMeasure(),
-                new NightHunterDoubleSoakMeasure()
+                new NightHunterDoubleSoakMeasure(),
+                new FatalFinesseSoakingMeasure()
         );
     }
 
