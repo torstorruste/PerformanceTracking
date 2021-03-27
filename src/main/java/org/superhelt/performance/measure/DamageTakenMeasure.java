@@ -36,7 +36,7 @@ public class DamageTakenMeasure implements Measure {
     @Override
     public int calculate(Encounter encounter, Player player) {
         return (int)encounter.getEvents().stream()
-                .filter(e->e.getEventType()== EventType.DAMAGE)
+                .filter(e->e.getEventType() == EventType.DAMAGE)
                 .filter(e->e.getAbility().equals(ability))
                 .filter(e->e.getTarget().equals(player))
                 .count();

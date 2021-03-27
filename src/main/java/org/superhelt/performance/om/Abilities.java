@@ -7,9 +7,15 @@ import java.util.Map;
 
 public class Abilities {
 
-    // Heals
+    // Consumables
     public static final Ability HEALTHSTONE = new Ability(6262, "Healthstone");
     public static final Ability HEALING_POTION = new Ability(307192, "Healingpotion");
+    public static final Ability SPECTRAL_INTELLECT = new Ability(307162, "Potion of Spectral Intellect");
+    public static final Ability PHANTOM_FIRE = new Ability(307495, "Potion of Phantom Fire");
+    public static final Ability SPECTRAL_STRENGTH = new Ability(307164, "Potion of Spectral Strength");
+    public static final Ability SPECTRAL_AGILITY = new Ability(307159, "Potion of Spectral Agility");
+    public static final Ability SACRIFICIAL_ANIMA = new Ability(322302, "Potion of Sacrificial Anima");
+    public static final Ability SPIRITUAL_CLARITY = new Ability(307161, "Potion of Spiritual Clarity");
 
     // Defensives
     public static final Ability FLESHCRAFT = new Ability(324867, "Fleshcraft");
@@ -117,13 +123,17 @@ public class Abilities {
     public static final Ability WRACKING_PAIN = new BossAbility(329181, "Wracking Pain", 2407);
     public static final Ability RANCOR = new BossAbility(335873, "Rancor", 2407);
     public static final Ability RAVAGE = new BossAbility(327123, "Ravage", 2407);
-    // TODO: Insatiable hunger and night hunter
     // TODO: Impale
     // TODO: Hand of Destruction damage
     // TODO: Orbs
 
+    public static final Ability NIGHT_HUNTER_DEBUFF = new BossAbility(327796, "Night Hunter Debuff", 2407);
+    public static final Ability NIGHT_HUNTER_DAMAGE = new BossAbility(327810, "Night Hunter Damage", 2407);
+    public static final Ability INSATIABLE_HUNGER = new BossAbility(327823, "Insatiable Hunger", 2407);
+    public static final Ability FATAL_FINESSE = new BossAbility(332797, "Fatal Finesse", 2407);
+
     public static List<Ability> getHeals() {
-        return Arrays.asList(HEALTHSTONE, HEALING_POTION);
+        return Arrays.asList(HEALTHSTONE, HEALING_POTION, SPECTRAL_INTELLECT, SPECTRAL_AGILITY, SPECTRAL_STRENGTH, PHANTOM_FIRE, SACRIFICIAL_ANIMA, SPIRITUAL_CLARITY);
     }
 
     public static List<Ability> getDefensives() {
@@ -153,12 +163,26 @@ public class Abilities {
         );
     }
 
+    public static List<Ability> getDebuffs() {
+        return Arrays.asList(
+                NIGHT_HUNTER_DEBUFF
+        );
+    }
+
+    public static List<Ability> getDamageTaken() {
+        return Arrays.asList(
+                NIGHT_HUNTER_DAMAGE, INSATIABLE_HUNGER, FATAL_FINESSE
+        );
+    }
+
     public static Map<Integer, Ability> getAbilityMap() {
         Map<Integer, Ability> result = new HashMap<>();
 
         addAbilities(result, getHeals());
         addAbilities(result, getDefensives());
         addAbilities(result, getMechanics());
+        addAbilities(result, getDamageTaken());
+        addAbilities(result, getDebuffs());
 
         return result;
     }

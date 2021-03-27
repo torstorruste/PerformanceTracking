@@ -12,13 +12,13 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HealingProvider implements EventProvider {
+public class CastProvider implements EventProvider {
 
-    private static final Logger log = LoggerFactory.getLogger(HealingProvider.class);
+    private static final Logger log = LoggerFactory.getLogger(CastProvider.class);
     private final Ability ability;
 
 
-    public HealingProvider(Ability ability) {
+    public CastProvider(Ability ability) {
         this.ability = ability;
     }
 
@@ -26,7 +26,7 @@ public class HealingProvider implements EventProvider {
     public String getQueryFragment(Report report) {
         long endTime = Duration.between(report.getStartTime(), report.getEndTime()).getSeconds()*1000;
 
-        return String.format("%s: events(abilityID: %d, startTime: %d, endTime: %d, dataType: Healing) {data}",
+        return String.format("%s: events(abilityID: %d, startTime: %d, endTime: %d, dataType: Casts) {data}",
                 ability.getWarcraftlogsName(), ability.getId(), 0, endTime);
     }
 

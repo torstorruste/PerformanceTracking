@@ -32,6 +32,10 @@ public class EventUtils {
 
                 int abilityId = abilityIdParser.apply(event);
 
+                if(abilityId==0) {
+                    int a = 5;
+                }
+
                 return Optional.of(new WarcraftLogsEvent(fightId, timestamp, sourceId, targetId, abilityId, eventType, amount, mitigated, unmitigatedAmount, overkill));
             } else {
                 log.warn("Ignoring event {}: fight is null", event);
