@@ -2,7 +2,6 @@ package org.superhelt.performance.measure;
 
 import org.superhelt.performance.om.*;
 
-import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,7 +32,7 @@ public class NightHunterSoakMeasure implements Measure {
                 .sorted(Comparator.comparing(Event::getTimestamp))
                 .collect(Collectors.toList());
 
-        var group = EventGroup.groupByTime(damageEvents, 5);
+        List<EventGroup> group = EventGroup.groupByTime(damageEvents, 5);
 
         return numBuffs + group.size();
     }

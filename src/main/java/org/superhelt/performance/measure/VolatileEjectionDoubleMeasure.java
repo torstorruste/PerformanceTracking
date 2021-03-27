@@ -2,6 +2,7 @@ package org.superhelt.performance.measure;
 
 import org.superhelt.performance.om.*;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class VolatileEjectionDoubleMeasure implements Measure {
@@ -17,12 +18,12 @@ public class VolatileEjectionDoubleMeasure implements Measure {
 
     @Override
     public int calculate(Encounter encounter, Player player) {
-        var events = encounter.getEvents().stream()
+        List<Event> events = encounter.getEvents().stream()
                 .filter(e->e.getEventType()==EventType.DAMAGE)
                 .filter(e->e.getAbility()==Abilities.VOLATILE_EJECTION)
                 .filter(e->e.getTarget().equals(player))
                 .collect(Collectors.toList());
-        var groups = EventGroup.groupByTime(events, 40);
+        List<EventGroup> groups = EventGroup.groupByTime(events, 40);
         return (int) groups.stream().filter(g->g.size()>1).count();
     }
 

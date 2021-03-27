@@ -28,7 +28,7 @@ public class NightHunterDoubleSoakMeasure implements Measure {
                 .sorted(Comparator.comparing(Event::getTimestamp))
                 .collect(Collectors.toList());
 
-        var groups = EventGroup.groupByTime(damageEvents, 5);
+        List<EventGroup> groups = EventGroup.groupByTime(damageEvents, 5);
 
         return (int) groups.stream().filter(g->g.size()>1).count();
     }
