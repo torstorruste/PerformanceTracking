@@ -80,6 +80,7 @@ public class Abilities {
     public static final Ability SPREADSHOT = new BossAbility(334404, "Spreadshot", 2418);
 
     // Hungering Destroyer (2383)
+    public static final Ability VOLATILE_EJECTION = new BossAbility(334228, "Volatile Ejection", 2383);
 
     // Sun King (2402)
     public static final Ability SMOLDERING_REMNANT = new BossAbility(328579, "Smoldering Remnant", 2402);
@@ -123,6 +124,7 @@ public class Abilities {
     public static final Ability WRACKING_PAIN = new BossAbility(329181, "Wracking Pain", 2407);
     public static final Ability RANCOR = new BossAbility(335873, "Rancor", 2407);
     public static final Ability RAVAGE = new BossAbility(327123, "Ravage", 2407);
+    public static final Ability NEUTRALIZE = new BossAbility(339113, "Neutralize", 2407);
     // TODO: Impale
     // TODO: Hand of Destruction damage
     // TODO: Orbs
@@ -171,7 +173,7 @@ public class Abilities {
 
     public static List<Ability> getDamageTaken() {
         return Arrays.asList(
-                NIGHT_HUNTER_DAMAGE, INSATIABLE_HUNGER, FATAL_FINESSE
+                NIGHT_HUNTER_DAMAGE, INSATIABLE_HUNGER, FATAL_FINESSE, VOLATILE_EJECTION, NEUTRALIZE
         );
     }
 

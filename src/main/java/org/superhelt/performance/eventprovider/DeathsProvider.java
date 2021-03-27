@@ -1,6 +1,7 @@
 package org.superhelt.performance.eventprovider;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,11 +17,11 @@ public class DeathsProvider implements EventProvider {
     private static final Logger log = LoggerFactory.getLogger(DeathsProvider.class);
 
     @Override
-    public String getQueryFragment(Report report) {
+    public String getQueryFragment(Report report, int startTime) {
         long endTime = Duration.between(report.getStartTime(), report.getEndTime()).getSeconds()*1000;
 
-        return String.format("Deaths: events(startTime: %d, endTime: %d, dataType: Deaths) {data}",
-                0, endTime);
+        return String.format("Deaths: events(startTime: %d, endTime: %d, dataType: Deaths) {data, nextPageTimestamp}",
+                startTime, endTime);
     }
 
     @Override
@@ -35,5 +36,12 @@ public class DeathsProvider implements EventProvider {
 
         log.debug("Found {} events for deaths", result.size());
         return result;
+    }
+
+    @Override
+    public Integer getNextTimestamp(JsonObject json) {
+        JsonElement nextTimestamp = json.get("Deaths").getAsJsonObject().get("nextPageTimestamp");
+        if(nextTimestamp.isJsonNull()) return null;
+        else return nextTimestamp.getAsInt();
     }
 }

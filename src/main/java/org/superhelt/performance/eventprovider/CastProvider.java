@@ -1,6 +1,7 @@
 package org.superhelt.performance.eventprovider;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +24,11 @@ public class CastProvider implements EventProvider {
     }
 
     @Override
-    public String getQueryFragment(Report report) {
+    public String getQueryFragment(Report report, int startTime) {
         long endTime = Duration.between(report.getStartTime(), report.getEndTime()).getSeconds()*1000;
 
-        return String.format("%s: events(abilityID: %d, startTime: %d, endTime: %d, dataType: Casts) {data}",
-                ability.getWarcraftlogsName(), ability.getId(), 0, endTime);
+        return String.format("%s: events(abilityID: %d, startTime: %d, endTime: %d, dataType: Casts) {data, nextPageTimestamp}",
+                ability.getWarcraftlogsName(), ability.getId(), startTime, endTime);
     }
 
     @Override
@@ -42,5 +43,12 @@ public class CastProvider implements EventProvider {
 
         log.debug("Found {} events for heal {}", result.size(), ability.getName());
         return result;
+    }
+
+    @Override
+    public Integer getNextTimestamp(JsonObject json) {
+        JsonElement nextTimestamp = json.get(ability.getWarcraftlogsName()).getAsJsonObject().get("nextPageTimestamp");
+        if(nextTimestamp.isJsonNull()) return null;
+        else return nextTimestamp.getAsInt();
     }
 }
