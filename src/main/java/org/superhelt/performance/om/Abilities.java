@@ -112,7 +112,7 @@ public class Abilities {
     public static final Ability HEEDLESS_CHARGE = new BossAbility(339067, "Heedless Charge", SLUDGEFIST);
     public static final Ability DESTRUCTIVE_STOMP = new BossAbility(332318, "Destructive Stomp", SLUDGEFIST);
     public static final Ability STONEQUAKE = new BossAbility(335361, "Stonequake", SLUDGEFIST);
-    // TODO: Seismic Shift splashes
+    public static final Ability SEISMIC_SHIFT = new BossAbility(341087, "Seismic Shift", SLUDGEFIST);
 
     // Stonelegion Generals
     public static final Ability CLUSTER_BOMBARDMENT = new BossAbility(336231, "Cluster Bombardment", GENERALS);
@@ -128,7 +128,6 @@ public class Abilities {
     public static final Ability NEUTRALIZE = new BossAbility(339113, "Neutralize", SIRE);
     // TODO: Impale
     // TODO: Hand of Destruction damage
-    // TODO: Orbs
 
     public static final Ability NIGHT_HUNTER_DEBUFF = new BossAbility(327796, "Night Hunter Debuff", SIRE);
     public static final Ability NIGHT_HUNTER_DAMAGE = new BossAbility(327810, "Night Hunter Damage", SIRE);
@@ -174,7 +173,7 @@ public class Abilities {
 
     public static List<Ability> getDamageTaken() {
         return Arrays.asList(
-                NIGHT_HUNTER_DAMAGE, INSATIABLE_HUNGER, FATAL_FINESSE, VOLATILE_EJECTION
+                NIGHT_HUNTER_DAMAGE, INSATIABLE_HUNGER, FATAL_FINESSE, VOLATILE_EJECTION, SEISMIC_SHIFT
         );
     }
 
