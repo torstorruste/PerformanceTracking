@@ -46,12 +46,24 @@ public class StatisticsResource {
 
     @Path("refresh")
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
     public Response refresh() {
         client.deleteReportOverview(guildId);
         encounters = getEncounters();
-        LocalDateTime startTime = encounters.get(encounters.size() - 1).getStartTime();
-        return Response.ok(dt.format(startTime)).build();
+        return getStatus();
+    }
+
+    @Path("status")
+    @GET
+    public Response getStatus() {
+        if(encounters==null) {
+            encounters = getEncounters();
+        }
+        int numEncounters = encounters.size();
+        LocalDateTime firstEncounter = encounters.get(0).getStartTime();
+        LocalDateTime lastEncounter = encounters.get(encounters.size()-1).getStartTime();
+
+        Status status = new Status(numEncounters, firstEncounter, lastEncounter);
+        return Response.ok(status).build();
     }
 
     @Path("players")
@@ -283,6 +295,10 @@ public class StatisticsResource {
         EventType eventType = event.getType();
         int amount = event.getAmount();
         int unmitigatedAmount = event.getUnmitigatedAmount();
+
+        if(ability==null) {
+            log.debug("Unable to find ability with id {}", event.getAbilityId());
+        }
 
         return new Event(timestamp, source, target, ability, eventType, amount, unmitigatedAmount);
     }

@@ -2,7 +2,7 @@ package org.superhelt.performance.measure;
 
 public enum MeasureType {
     DEFENSIVE,
-    HEALING,
+    CONSUMABLE,
     MECHANIC,
     BASIC,
     ENCOUNTER

@@ -2,11 +2,11 @@ package org.superhelt.performance.measure;
 
 import org.superhelt.performance.om.*;
 
-public class DamageTakenMeasure implements Measure {
+public class CastMeasure implements Measure {
 
     private final Ability ability;
 
-    public DamageTakenMeasure(Ability ability) {
+    public CastMeasure(Ability ability) {
         this.ability = ability;
     }
 
@@ -17,15 +17,15 @@ public class DamageTakenMeasure implements Measure {
 
     @Override
     public MeasureType getType() {
-        return MeasureType.MECHANIC;
+        return MeasureType.CONSUMABLE;
     }
 
     @Override
     public int calculate(Encounter encounter, Player player) {
         return (int)encounter.getEvents().stream()
-                .filter(e->e.getEventType() == EventType.DAMAGE)
+                .filter(e->e.getEventType()== EventType.CAST)
                 .filter(e->e.getAbility().equals(ability))
-                .filter(e->e.getTarget().equals(player))
+                .filter(e->e.getSource().equals(player))
                 .count();
     }
 

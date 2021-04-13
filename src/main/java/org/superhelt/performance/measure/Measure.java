@@ -9,8 +9,6 @@ public interface Measure {
 
     String getName();
     MeasureType getType();
-    Integer getBossId();
-    PlayerClass getPlayerClass();
     int calculate(Encounter encounter, Player player);
     boolean isRelevant(Boss boss, Player player);
 }

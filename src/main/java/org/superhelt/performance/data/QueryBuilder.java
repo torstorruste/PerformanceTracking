@@ -4,7 +4,9 @@ import org.superhelt.performance.om.warcraftlogs.Report;
 import org.superhelt.performance.eventprovider.EventProvider;
 import org.superhelt.performance.reportprovider.ValueProvider;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class QueryBuilder {
 
@@ -36,6 +38,10 @@ public class QueryBuilder {
     }
 
     public String createQuery(Report report, List<EventProvider> eventProviders) {
+        return createQuery(report, eventProviders, Collections.emptyMap());
+    }
+
+    public String createQuery(Report report, List<EventProvider> eventProviders, Map<EventProvider, Integer> startTimes) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("query {\n");
@@ -43,7 +49,7 @@ public class QueryBuilder {
         sb.append("\t\treport(code: \"").append(report.getCode()).append("\") {\n");
         sb.append("\t\t\tcode");
         for(EventProvider provider : eventProviders) {
-            sb.append(",\n").append(provider.getQueryFragment(report));
+            sb.append(",\n").append(provider.getQueryFragment(report, startTimes.getOrDefault(provider, 0)));
         }
 
         sb.append("\t\t}\n");

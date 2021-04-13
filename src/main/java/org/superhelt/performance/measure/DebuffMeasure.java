@@ -2,40 +2,30 @@ package org.superhelt.performance.measure;
 
 import org.superhelt.performance.om.*;
 
-public class HealMeasure implements Measure {
+public class DebuffMeasure implements Measure {
 
     private final Ability ability;
 
-    public HealMeasure(Ability ability) {
+    public DebuffMeasure(Ability ability) {
         this.ability = ability;
     }
 
     @Override
     public String getName() {
-        return ability.getName();
+        return "Possession";
     }
 
     @Override
     public MeasureType getType() {
-        return MeasureType.HEALING;
-    }
-
-    @Override
-    public Integer getBossId() {
-        return null;
-    }
-
-    @Override
-    public PlayerClass getPlayerClass() {
-        return null;
+        return MeasureType.MECHANIC;
     }
 
     @Override
     public int calculate(Encounter encounter, Player player) {
         return (int)encounter.getEvents().stream()
-                .filter(e->e.getEventType()== EventType.HEAL)
+                .filter(e->e.getEventType() == EventType.APPLY_DEBUFF)
                 .filter(e->e.getAbility().equals(ability))
-                .filter(e->e.getSource().equals(player))
+                .filter(e->e.getTarget().equals(player))
                 .count();
     }
 

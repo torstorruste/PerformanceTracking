@@ -76,11 +76,15 @@ public class WarcraftLogsClient implements DataClient {
     }
 
     public List<WarcraftLogsEvent> getEvents(Report report, List<EventProvider> eventProviders) {
-        log.debug("Preparing to fetch events for report {}", report.getCode());
+        return getEvents(report, eventProviders, Collections.emptyMap());
+    }
+
+    public List<WarcraftLogsEvent> getEvents(Report report, List<EventProvider> eventProviders, Map<EventProvider, Integer> startTimes) {
+        log.info("Preparing to fetch events for report {}", report.getCode());
         if (token == null) {
             token = getToken();
         }
-        String query = queryBuilder.createQuery(report, eventProviders);
+        String query = queryBuilder.createQuery(report, eventProviders, startTimes);
         String response = executeQuery(token, query);
         JsonObject json = JsonParser.parseString(response).getAsJsonObject()
                 .get("data").getAsJsonObject()
@@ -92,7 +96,19 @@ public class WarcraftLogsClient implements DataClient {
             result.addAll(provider.getValues(report, json));
         }
 
-        log.debug("Found {} events for report {}", result.size(), report.getCode());
+        Map<EventProvider, Integer> moreEvents = new HashMap<>();
+        for(EventProvider provider : eventProviders) {
+            Integer nextTimestamp = provider.getNextTimestamp(json);
+            if(nextTimestamp!=null) {
+                moreEvents.put(provider, nextTimestamp);
+            }
+        }
+        if(!moreEvents.isEmpty()) {
+            log.info("Fetching more events for {} providers", moreEvents.size());
+            result.addAll(getEvents(report, new ArrayList<>(moreEvents.keySet()), moreEvents));
+        }
+
+        log.info("Found {} events for report {}", result.size(), report.getCode());
         return result;
     }
 
