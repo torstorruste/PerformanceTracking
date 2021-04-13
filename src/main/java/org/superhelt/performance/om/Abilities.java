@@ -48,6 +48,7 @@ public class Abilities {
     // Priest
     public static final Ability FADE = new ClassAbility(586, "Fade", PlayerClass.PRIEST);
     public static final Ability DESPERATE_PRAYER = new ClassAbility(19236, "Desperate Prayer", PlayerClass.PRIEST);
+    public static final Ability DISPERSION = new ClassAbility(47585, "Dispersion", PlayerClass.PRIEST);
 
     // Rogue
 
@@ -133,7 +134,7 @@ public class Abilities {
                 ICE_BARRIER, BLAZING_BARRIER, ICE_BLOCK, ALTER_TIME,
                 TOUCH_OF_KARMA, FORTIFYING_BREW, DIFFUSE_MAGIC,
                 DIVINE_PROTECTION, DIVINE_SHIELD,
-                FADE, DESPERATE_PRAYER,
+                FADE, DESPERATE_PRAYER, DISPERSION,
                 ASTRAL_SHIFT, HARDEN_SKIN,
                 UNENDING_RESOLVE,
                 DIE_BY_THE_SWORD, ENRAGED_REGENERATION, SPELL_REFLECTION);
