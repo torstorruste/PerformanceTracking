@@ -18,6 +18,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class WarcraftLogsClient implements DataClient {
@@ -29,14 +31,19 @@ public class WarcraftLogsClient implements DataClient {
 
     private final QueryBuilder queryBuilder;
     private String token;
+    private LocalDateTime tokenTime = null;
 
     public WarcraftLogsClient(QueryBuilder queryBuilder) {
         this.queryBuilder = queryBuilder;
     }
 
+    private boolean needsNewToken() {
+        return token == null || (tokenTime!=null && tokenTime.isBefore(LocalDateTime.now().minus(1, ChronoUnit.HOURS)));
+    }
+
     public List<String> getReportIds(int guildId) {
         log.debug("Preparing to fetch report ids for guild {}", guildId);
-        if (token == null) {
+        if (needsNewToken()) {
             token = getToken();
         }
         String query = queryBuilder.listReportQuery(guildId);
@@ -57,7 +64,7 @@ public class WarcraftLogsClient implements DataClient {
 
     public Report getReport(String reportId) {
         log.debug("Preparing to fetch report with id {}", reportId);
-        if (token == null) {
+        if (needsNewToken()) {
             token = getToken();
         }
         ReportProvider reportProvider = new ReportProvider(
@@ -81,7 +88,7 @@ public class WarcraftLogsClient implements DataClient {
 
     public List<WarcraftLogsEvent> getEvents(Report report, List<EventProvider> eventProviders, Map<EventProvider, Integer> startTimes) {
         log.info("Preparing to fetch events for report {}", report.getCode());
-        if (token == null) {
+        if (needsNewToken()) {
             token = getToken();
         }
         String query = queryBuilder.createQuery(report, eventProviders, startTimes);
@@ -129,6 +136,7 @@ public class WarcraftLogsClient implements DataClient {
             if (responseCode < 400) {
                 String token = extractToken(getContent(connection.getInputStream()));
                 log.debug("Returning token");
+                tokenTime = LocalDateTime.now();
                 return token;
             } else {
                 throw new RuntimeException(getContent(connection.getErrorStream()));
