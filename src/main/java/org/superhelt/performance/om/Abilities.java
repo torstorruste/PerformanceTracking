@@ -61,6 +61,9 @@ public class Abilities {
     public static final Ability DISPERSION = new ClassAbility(47585, "Dispersion", PlayerClass.PRIEST);
 
     // Rogue
+    public static final Ability FEINT = new ClassAbility(1966, "Feint", PlayerClass.ROGUE);
+    public static final Ability CLOAK_OF_SHADOWS = new ClassAbility(31224, "Cloak of Shadows", PlayerClass.ROGUE);
+    public static final Ability EVASION = new ClassAbility(5277, "Evasion", PlayerClass.ROGUE);
 
     // Shaman
     public static final Ability ASTRAL_SHIFT = new ClassAbility(108271, "Astral Shift", PlayerClass.SHAMAN);
@@ -154,6 +157,7 @@ public class Abilities {
                 TOUCH_OF_KARMA, FORTIFYING_BREW, DIFFUSE_MAGIC, DAMPEN_HARM,
                 DIVINE_PROTECTION, DIVINE_SHIELD,
                 FADE, DESPERATE_PRAYER, DISPERSION,
+                FEINT, CLOAK_OF_SHADOWS, EVASION,
                 ASTRAL_SHIFT, HARDEN_SKIN,
                 UNENDING_RESOLVE, DARK_PACT,
                 DIE_BY_THE_SWORD, ENRAGED_REGENERATION, SPELL_REFLECTION);
