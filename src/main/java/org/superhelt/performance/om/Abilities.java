@@ -34,19 +34,22 @@ public class Abilities {
 
     // Hunter
     public static final Ability SURVIVAL_OF_THE_FITTEST = new ClassAbility(281195, "Survival Of The Fittest", PlayerClass.HUNTER);
-    public static final Ability EXHILIRATION = new ClassAbility(109304, "Exhiliration", PlayerClass.HUNTER);
+    public static final Ability EXHILARATION = new ClassAbility(109304, "Exhilaration", PlayerClass.HUNTER);
     public static final Ability ASPECT_OF_THE_TURTLE = new ClassAbility(186265, "Aspect of the Turtle", PlayerClass.HUNTER);
+    public static final Ability RESILIENCE_OF_THE_HUNTER = new ClassAbility(339461, "Resilience of the Hunter", PlayerClass.HUNTER);
 
     // Mage
     public static final Ability ICE_BARRIER = new ClassAbility(11426, "Ice Barrier", PlayerClass.MAGE);
     public static final Ability BLAZING_BARRIER = new ClassAbility(235313, "Blazing Barrier", PlayerClass.MAGE);
     public static final Ability ALTER_TIME = new ClassAbility(110909, "Alter Time", PlayerClass.MAGE);
     public static final Ability ICE_BLOCK = new ClassAbility(45438, "Ice Block", PlayerClass.MAGE);
+    public static final Ability MIRROR_IMAGE = new ClassAbility(55342, "Mirror Image", PlayerClass.MAGE);
 
     // Monk
     public static final Ability TOUCH_OF_KARMA = new ClassAbility(122470, "Touch Of Karma", PlayerClass.MONK);
     public static final Ability FORTIFYING_BREW = new ClassAbility(243435, "Fortifying Brew", PlayerClass.MONK);
     public static final Ability DIFFUSE_MAGIC = new ClassAbility(122783, "Diffuse Magic", PlayerClass.MONK);
+    public static final Ability DAMPEN_HARM = new ClassAbility(122278, "Dampen Harm", PlayerClass.MONK);
 
     // Paladin
     public static final Ability DIVINE_PROTECTION = new ClassAbility(498, "Divine Protection", PlayerClass.PALADIN);
@@ -65,6 +68,8 @@ public class Abilities {
 
     // Warlock
     public static final Ability UNENDING_RESOLVE = new ClassAbility(104773, "Unending Resolve", PlayerClass.WARLOCK);
+    public static final Ability MORTAL_COIL = new ClassAbility(6789, "Mortal Coil", PlayerClass.WARLOCK);
+    public static final Ability DARK_PACT = new ClassAbility(108416, "Dark Pact", PlayerClass.WARLOCK);
 
     // Warriors
     public static final Ability DIE_BY_THE_SWORD = new ClassAbility(118038, "Die By The Sword", PlayerClass.WARRIOR);
@@ -136,19 +141,21 @@ public class Abilities {
     public static final Ability FATAL_FINESSE = new BossAbility(332797, "Fatal Finesse", SIRE);
 
     public static List<Ability> getHeals() {
-        return Arrays.asList(HEALTHSTONE, HEALING_POTION, SPECTRAL_INTELLECT, SPECTRAL_AGILITY, SPECTRAL_STRENGTH, PHANTOM_FIRE, SACRIFICIAL_ANIMA, SPIRITUAL_CLARITY);
+        return Arrays.asList(HEALTHSTONE, HEALING_POTION, SPECTRAL_INTELLECT, SPECTRAL_AGILITY,
+                SPECTRAL_STRENGTH, PHANTOM_FIRE, SACRIFICIAL_ANIMA, SPIRITUAL_CLARITY,
+                EXHILARATION, MORTAL_COIL);
     }
 
     public static List<Ability> getDefensives() {
         return Arrays.asList(ANTI_MAGIC_SHELL, ICEBOUND_FORTITUDE, LICHBORNE, FLESHCRAFT,
                 BARKSKIN, SURVIVAL_INSTINCTS,
-                SURVIVAL_OF_THE_FITTEST, EXHILIRATION, ASPECT_OF_THE_TURTLE,
-                ICE_BARRIER, BLAZING_BARRIER, ICE_BLOCK, ALTER_TIME,
-                TOUCH_OF_KARMA, FORTIFYING_BREW, DIFFUSE_MAGIC,
+                SURVIVAL_OF_THE_FITTEST, ASPECT_OF_THE_TURTLE, RESILIENCE_OF_THE_HUNTER,
+                ICE_BARRIER, BLAZING_BARRIER, ICE_BLOCK, ALTER_TIME, MIRROR_IMAGE,
+                TOUCH_OF_KARMA, FORTIFYING_BREW, DIFFUSE_MAGIC, DAMPEN_HARM,
                 DIVINE_PROTECTION, DIVINE_SHIELD,
                 FADE, DESPERATE_PRAYER, DISPERSION,
                 ASTRAL_SHIFT, HARDEN_SKIN,
-                UNENDING_RESOLVE,
+                UNENDING_RESOLVE, DARK_PACT,
                 DIE_BY_THE_SWORD, ENRAGED_REGENERATION, SPELL_REFLECTION);
     }
 
