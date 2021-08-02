@@ -2,9 +2,7 @@ package org.superhelt.performance.measure;
 
 import org.superhelt.performance.om.Abilities;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Measures {
@@ -26,13 +24,7 @@ public class Measures {
     }
 
     public static List<Measure> getAdvancedMechanics() {
-        return Arrays.asList(
-                new VolatileEjectionDoubleMeasure(),
-                new SeismicShiftSplashMeasure(),
-                new NightHunterSoakMeasure(),
-                new NightHunterDoubleSoakMeasure(),
-                new FatalFinesseSoakingMeasure()
-        );
+        return Collections.emptyList();
     }
 
     public static List<Measure> getAll() {
@@ -46,6 +38,20 @@ public class Measures {
         result.add(new EarlyDeathMeasure());
         result.add(new ProgressMeasure());
         result.add(new FarmMeasure());
+
+        return getUnique(result);
+    }
+
+    private static List<Measure> getUnique(List<Measure> measures) {
+        Set<String> knownMeasures = new HashSet<>();
+        List<Measure> result = new ArrayList<>();
+
+        for(Measure measure : measures) {
+            if(!knownMeasures.contains(measure.getName())) {
+                result.add(measure);
+                knownMeasures.add(measure.getName());
+            }
+        }
 
         return result;
     }

@@ -10,11 +10,13 @@ import java.util.Map;
 
 public class QueryBuilder {
 
+    private final int zoneId = 28;
+
     public String listReportQuery(int guildId) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("query { reportData { reports(guildID: ").append(guildId);
-        sb.append(", zoneID: 26) { data {code, zone {id, name}}}}}");
+        sb.append(", zoneID: ").append(zoneId).append(") { data {code, zone {id, name}}}}}");
 
         return convertToQuery(sb.toString());
     }

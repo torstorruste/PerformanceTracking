@@ -12,7 +12,7 @@ public class DebuffMeasure implements Measure {
 
     @Override
     public String getName() {
-        return "Possession";
+        return ability.getName();
     }
 
     @Override
@@ -23,6 +23,7 @@ public class DebuffMeasure implements Measure {
     @Override
     public int calculate(Encounter encounter, Player player) {
         return (int)encounter.getEvents().stream()
+                .filter(e->e.getTarget()!=null)
                 .filter(e->e.getEventType() == EventType.APPLY_DEBUFF)
                 .filter(e->e.getAbility().equals(ability))
                 .filter(e->e.getTarget().equals(player))

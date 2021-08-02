@@ -21,7 +21,7 @@ public class Ability {
     }
 
     public String getWarcraftlogsName() {
-        return name.replace(" ", "");
+        return String.format("a%d_%s", id, name.replace(" ", ""));
     }
 
     public boolean isRelevant(Boss boss, Player player) {

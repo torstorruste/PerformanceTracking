@@ -4,6 +4,7 @@ public enum EventType {
     APPLY_BUFF,
     REFRESH_BUFF,
     REMOVE_BUFF,
+    REMOVE_BUFF_STACK,
     APPLY_DEBUFF,
     REFRESH_DEBUFF,
     REMOVE_DEBUFF,
@@ -24,6 +25,7 @@ public enum EventType {
             case "death": return DEATH;
             case "damage": return DAMAGE;
             case "cast": return CAST;
+            case "removebuffstack": return REMOVE_BUFF_STACK;
             default: throw new IllegalArgumentException("Unknown event type "+json);
         }
     }
