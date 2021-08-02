@@ -174,6 +174,18 @@ public class StatisticsResource {
         addBoss(result, bosses, "Stone Legion Generals");
         addBoss(result, bosses, "Sire Denathrius");
 
+        addBoss(result, bosses, "The Tarragrue");
+        addBoss(result, bosses, "The Eye of the Jailer");
+        addBoss(result, bosses, "The Nine");
+        addBoss(result, bosses, "Remnant of Ner'zhul");
+        addBoss(result, bosses, "Soulrender Dormazain");
+        addBoss(result, bosses, "Painsmith Raznal");
+        addBoss(result, bosses, "Guardian of the First Ones");
+        addBoss(result, bosses, "Fatescribe Roh-Kalo");
+        addBoss(result, bosses, "Kel'Thuzad");
+        addBoss(result, bosses, "Sylvanas Windrunner");
+
+
         bosses.stream().filter(b->!result.contains(b))
                 .forEach(result::add);
 

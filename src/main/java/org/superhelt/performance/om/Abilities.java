@@ -107,6 +107,10 @@ public class Abilities {
     public static final Ability SPITE3 = new BossAbility(354534, "Spite", NERZHUL);
     public static final Ability GRASP_OF_MALICE = new BossAbility(350076, "Grasp of Malice", NERZHUL);
 
+    // Soulrender
+    public static final Ability RENDERED_SOUL = new BossAbility(351229, "Rendered Soul", SOULRENDER);
+    public static final Ability TORMENT = new BossAbility(350217, "Torment", SOULRENDER);
+
     public static List<Ability> getHeals() {
         return Arrays.asList(HEALTHSTONE, HEALING_POTION, SPECTRAL_INTELLECT, SPECTRAL_AGILITY,
                 SPECTRAL_STRENGTH, PHANTOM_FIRE, SACRIFICIAL_ANIMA, SPIRITUAL_CLARITY,
@@ -132,7 +136,8 @@ public class Abilities {
                 HUNGERING_MIST,
                 JAILERS_MISERY, ANNIHILATING_GLARE,
                 ARADNES_FALLING_STRIKE, AGATHAS_ETERNAL_BLADE, WINGS_OF_RAGE, WINGS_OF_RAGE2, REVERBERATING_REFRAIN, REVERBERATING_REFRAIN2,
-                GRASP_OF_MALICE
+                GRASP_OF_MALICE,
+                RENDERED_SOUL, TORMENT
         );
     }
 

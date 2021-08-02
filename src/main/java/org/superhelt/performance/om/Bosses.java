@@ -19,8 +19,8 @@ public class Bosses {
     public static final int NERZHUL = 2432;
     public static final int SOULRENDER = 2434;
     public static final int PAINSMITH = 2430;
-    public static final int GUARDIANS = 2436;
+    public static final int GUARDIAN = 2436;
     public static final int FATESCRIBE = 2431;
-    public static final int KELTHUZZAD = 2422;
+    public static final int KELTHUZAD = 2422;
     public static final int SYLVANAS = 2435;
 }
