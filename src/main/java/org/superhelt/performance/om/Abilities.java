@@ -111,6 +111,12 @@ public class Abilities {
     public static final Ability RENDERED_SOUL = new BossAbility(351229, "Rendered Soul", SOULRENDER);
     public static final Ability TORMENT = new BossAbility(350217, "Torment", SOULRENDER);
 
+    // Painsmith
+    public static final Ability SPIKED = new BossAbility(355526, "Spiked", PAINSMITH);
+    public static final Ability SPIKED_BALL = new BossAbility(348363, "Spiked Ball", PAINSMITH);
+    public static final Ability SHADOWSTEEL_EMBERS = new BossAbility(355535, "Shadowsteel Embers", PAINSMITH);
+    public static final Ability SHADOWSTEEL_CHAINS = new BossAbility(355524, "Shadowsteel Chains", PAINSMITH);
+
     public static List<Ability> getHeals() {
         return Arrays.asList(HEALTHSTONE, HEALING_POTION, SPECTRAL_INTELLECT, SPECTRAL_AGILITY,
                 SPECTRAL_STRENGTH, PHANTOM_FIRE, SACRIFICIAL_ANIMA, SPIRITUAL_CLARITY,
@@ -137,7 +143,8 @@ public class Abilities {
                 JAILERS_MISERY, ANNIHILATING_GLARE,
                 ARADNES_FALLING_STRIKE, AGATHAS_ETERNAL_BLADE, WINGS_OF_RAGE, WINGS_OF_RAGE2, REVERBERATING_REFRAIN, REVERBERATING_REFRAIN2,
                 GRASP_OF_MALICE,
-                RENDERED_SOUL, TORMENT
+                RENDERED_SOUL, TORMENT,
+                SPIKED, SPIKED_BALL, SHADOWSTEEL_EMBERS
         );
     }
 
