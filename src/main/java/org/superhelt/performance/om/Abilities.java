@@ -117,6 +117,28 @@ public class Abilities {
     public static final Ability SHADOWSTEEL_EMBERS = new BossAbility(355535, "Shadowsteel Embers", PAINSMITH);
     public static final Ability SHADOWSTEEL_CHAINS = new BossAbility(355524, "Shadowsteel Chains", PAINSMITH);
 
+    // Guardian
+    public static final Ability DISINTEGRATION = new BossAbility(352833, "Disintegration", GUARDIAN);
+
+    // Fatescribe
+    public static final Ability FATE_FRAGMENT = new BossAbility(353162, "Fate Fragment", FATESCRIBE);
+    public static final Ability DESPAIR = new BossAbility(357144, "Despair", FATESCRIBE);
+    public static final Ability FATED_CONJUNCTION = new BossAbility(350355, "Fated Conjunction", FATESCRIBE);
+
+    // Kel'Thuzad
+    public static final Ability SHADOW_FISSURE = new BossAbility(355136, "Shadow Fissure", KELTHUZAD);
+    public static final Ability FREEZING_BLAST = new BossAbility(352381, "Freezing Blast", KELTHUZAD);
+
+    // Sylvanas
+    public static final Ability DOMINATION_CHAINS = new BossAbility(352318, "Domination Chains", SYLVANAS);
+    public static final Ability VEIL_OF_DARKNESS = new BossAbility(350777, "Veil of Darkness", SYLVANAS);
+    public static final Ability DESECRATING_SHOT = new BossAbility(356377, "Desecrating Shot", SYLVANAS);
+    public static final Ability RIVEN_DEBRIS = new BossAbility(353413, "Riven Debris", SYLVANAS);
+    public static final Ability RIVE = new BossAbility(348145, "Rive", SYLVANAS);
+    public static final Ability DEATH_KNIVES = new BossAbility(358433, "Death Knives", SYLVANAS);
+    public static final Ability HAUNTING_WAVE = new BossAbility(351870, "Haunting Wave", SYLVANAS);
+
+
     public static List<Ability> getHeals() {
         return Arrays.asList(HEALTHSTONE, HEALING_POTION, SPECTRAL_INTELLECT, SPECTRAL_AGILITY,
                 SPECTRAL_STRENGTH, PHANTOM_FIRE, SACRIFICIAL_ANIMA, SPIRITUAL_CLARITY,
@@ -141,10 +163,14 @@ public class Abilities {
         return Arrays.asList(
                 HUNGERING_MIST,
                 JAILERS_MISERY, ANNIHILATING_GLARE,
-                ARADNES_FALLING_STRIKE, AGATHAS_ETERNAL_BLADE, WINGS_OF_RAGE, WINGS_OF_RAGE2, REVERBERATING_REFRAIN, REVERBERATING_REFRAIN2,
+                ARADNES_FALLING_STRIKE, AGATHAS_ETERNAL_BLADE,
                 GRASP_OF_MALICE,
                 RENDERED_SOUL, TORMENT,
-                SPIKED, SPIKED_BALL, SHADOWSTEEL_EMBERS
+                SPIKED, SPIKED_BALL, SHADOWSTEEL_EMBERS,
+                DISINTEGRATION,
+                FATE_FRAGMENT, DESPAIR, FATED_CONJUNCTION,
+                SHADOW_FISSURE, FREEZING_BLAST,
+                DOMINATION_CHAINS, VEIL_OF_DARKNESS, DESECRATING_SHOT, RIVEN_DEBRIS, RIVE, DEATH_KNIVES, HAUNTING_WAVE
         );
     }
 
